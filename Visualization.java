@@ -1,0 +1,224 @@
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.MouseInputListener;
+
+public class Visualization extends JPanel implements ActionListener, KeyListener, MouseInputListener {
+	static final int rowSize = 51;
+	static final int colSize = 26;
+	static int size = 25;
+
+	JFrame window;
+	char currentKey = (char) 0;
+	AStar pathfindAStar;
+	Timer timer = new Timer(30, this);
+
+	public Visualization() {
+		addMouseListener(this);
+		addMouseMotionListener(this);
+		addKeyListener(this);
+		setFocusable(true);
+		initializeFieldButtons();
+		repaint();
+
+		window = new JFrame();
+		window.setContentPane(this);
+		window.setTitle("A* Pathfinding Visualization");
+		window.getContentPane().setPreferredSize(new Dimension(1920, 1080));
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.pack();
+		window.setLocationRelativeTo(null);
+		window.setVisible(true);
+
+		pathfindAStar = new AStar(window);
+	}
+
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+						| UnsupportedLookAndFeelException ex) {
+				}
+
+				new Visualization();
+			}
+		});
+	}
+
+	public void initializeFieldButtons() {
+		JButton clearButton = new JButton("Clear");
+		JButton startButton = new JButton("Start");
+
+		// Clear the field, start over
+		clearButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pathfindAStar = new AStar(window);
+				repaint();
+			}
+		});
+
+		// Start the pathfinding process
+		startButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//if (!pathfindAStar.isRunning())
+				//	return;
+
+				try {
+					pathfindAStar.isRunning = true;
+					timer.start();
+				} catch (Exception ex) {
+					System.out.println(ex.getMessage());
+				}
+			}
+		});
+
+		add(clearButton);
+		add(startButton);
+	}
+
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+
+		// Draws grid
+		g.setColor(Color.lightGray);
+		for (int j = 0; j < this.getHeight(); j += size) {
+			for (int i = 0; i < this.getWidth(); i += size) {
+				g.drawRect(i, j, size, size);
+			}
+		}
+
+		// Draws borders
+		g.setColor(Color.black);
+		for (Node node : this.pathfindAStar.borderCollection) {
+			g.fillRect(node.getX() * size, node.getY() * size, size, size);
+		}
+
+		// Draws the start node
+		if (pathfindAStar.startNode != null) {
+			g.setColor(Color.green);
+			g.fillRect(pathfindAStar.startNode.getX() * size, pathfindAStar.startNode.getY() * size, size, size);
+		}
+
+		// Draws the goal node
+		if (pathfindAStar.goalNode != null) {
+			g.setColor(Color.red);
+			g.fillRect(pathfindAStar.goalNode.getX() * size, pathfindAStar.goalNode.getY() * size, size, size);
+		}
+		
+		g.setColor(new Color(175, 238, 238)); // Light blue
+		for (Node node : this.pathfindAStar.openList) {
+			if (node.getX() == pathfindAStar.startNode.getX() && node.getY() == pathfindAStar.startNode.getY())
+				continue;
+
+			g.fillRect(node.getX() * size, node.getY() * size, size, size);
+		}
+
+		g.setColor(Color.yellow); // Light yellow
+		for (Node node : this.pathfindAStar.pathToGoal) {
+			if (node.getX() == pathfindAStar.startNode.getX() && node.getY() == pathfindAStar.startNode.getY())
+				continue;
+			g.fillRect(node.getX() * size, node.getY() * size, size, size);
+		}
+	}
+
+	public void handleMouseClick(MouseEvent e) {
+		if (SwingUtilities.isLeftMouseButton(e)) {
+			int xPosition = Math.round(e.getX() / size);
+			int yPosition = Math.round(e.getY() / size);
+
+			if (currentKey == 's') {
+				pathfindAStar.startNode = new Node(xPosition, yPosition);
+				pathfindAStar.addToOpenList(pathfindAStar.startNode);
+			} else if (currentKey == 'e') {
+				pathfindAStar.goalNode = new Node(xPosition, yPosition);
+			} else {
+				this.pathfindAStar.addBorder(xPosition, yPosition);
+			}
+			repaint();
+		} else if (SwingUtilities.isRightMouseButton(e)) {
+			int xPosition = Math.round(e.getX() / size);
+			int yPosition = Math.round(e.getY() / size);
+
+			this.pathfindAStar.removeBorder(xPosition, yPosition);
+			repaint();
+		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		currentKey = e.getKeyChar();
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		currentKey = (char) 0;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		this.handleMouseClick(e);
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		this.handleMouseClick(e);
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (pathfindAStar.isRunning()) {
+			this.pathfindAStar.startAction();
+		}
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		this.handleMouseClick(e);
+
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+}
