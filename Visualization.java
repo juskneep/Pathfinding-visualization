@@ -24,15 +24,17 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 
 	JFrame window;
 	char currentKey = (char) 0;
-	AStar pathfindAStar;
 	Timer timer = new Timer(30, this);
+
+	AStar pathfindAStar;
+	GUIFactory guiFactory;
 
 	public Visualization() {
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		addKeyListener(this);
 		setFocusable(true);
-		initializeFieldButtons();
+		setLayout(null);
 		repaint();
 
 		window = new JFrame();
@@ -44,6 +46,7 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 		window.setLocationRelativeTo(null);
 		window.setVisible(true);
 
+		guiFactory = new GUIFactory(window);
 		pathfindAStar = new AStar(window);
 	}
 
@@ -62,40 +65,8 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 		});
 	}
 
-	public void initializeFieldButtons() {
-		JButton clearButton = new JButton("Clear");
-		JButton startButton = new JButton("Start");
-
-		// Clear the field, start over
-		clearButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				pathfindAStar = new AStar(window);
-				repaint();
-			}
-		});
-
-		// Start the pathfinding process
-		startButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//if (!pathfindAStar.isRunning())
-				//	return;
-
-				try {
-					pathfindAStar.isRunning = true;
-					timer.start();
-				} catch (Exception ex) {
-					System.out.println(ex.getMessage());
-				}
-			}
-		});
-
-		add(clearButton);
-		add(startButton);
-	}
-
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-
 		// Draws grid
 		g.setColor(Color.lightGray);
 		for (int j = 0; j < this.getHeight(); j += size) {
@@ -121,7 +92,7 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 			g.setColor(Color.red);
 			g.fillRect(pathfindAStar.goalNode.getX() * size, pathfindAStar.goalNode.getY() * size, size, size);
 		}
-		
+
 		g.setColor(new Color(175, 238, 238)); // Light blue
 		for (Node node : this.pathfindAStar.openList) {
 			if (node.getX() == pathfindAStar.startNode.getX() && node.getY() == pathfindAStar.startNode.getY())
