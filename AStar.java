@@ -19,8 +19,9 @@ public class AStar {
 	}
 
 	public void startAction() {
-		//if(startNode == null || goalNode == null) throw new Exception("Please set up the start and the end point!");
-		if(!openList.isEmpty()) {
+		// if(startNode == null || goalNode == null) throw new Exception("Please set up
+		// the start and the end point!");
+		if (!openList.isEmpty()) {
 			Node currentNode = openList.peek();
 			openList.remove(currentNode);
 
@@ -43,7 +44,7 @@ public class AStar {
 						&& node.getY() == neighbor.getY() && node.getfCost() < neighbor.getfCost()))
 					continue;
 				else {
-					openList.add(neighbor);					
+					openList.add(neighbor);
 				}
 			}
 			closedList.add(currentNode);
@@ -57,40 +58,14 @@ public class AStar {
 		int nodeColumnIndex = node.getY();
 
 		int topCellRow = nodeRowIndex - 1;
-		int leftDiagCol = nodeColumnIndex - 1;
-		int rightDiagCol = nodeColumnIndex + 1;
 		int leftCellCol = nodeColumnIndex - 1;
 		int rightCellCol = nodeColumnIndex + 1;
 		int bottomCellRow = nodeRowIndex + 1;
 
-		// Top cells
-		if (exist(topCellRow, nodeColumnIndex) && !isWall(topCellRow, nodeColumnIndex)
-				&& !isStartCell(topCellRow, nodeColumnIndex))
-			neighborList.add(new Node(topCellRow, nodeColumnIndex, node));
-		if (exist(topCellRow, leftDiagCol) && !isWall(topCellRow, leftDiagCol) && !isStartCell(topCellRow, leftDiagCol))
-			neighborList.add(new Node(topCellRow, leftDiagCol, node));
-		if (exist(topCellRow, rightDiagCol) && !isWall(topCellRow, rightDiagCol)
-				&& !isStartCell(topCellRow, rightDiagCol))
-			neighborList.add(new Node(topCellRow, rightDiagCol, node));
-
-		// Next neighbors
-		if (exist(nodeRowIndex, leftCellCol) && !isWall(nodeRowIndex, leftCellCol)
-				&& !isStartCell(nodeRowIndex, leftCellCol))
-			neighborList.add(new Node(nodeRowIndex, leftCellCol, node));
-		if (exist(nodeRowIndex, rightCellCol) && !isWall(nodeRowIndex, rightCellCol)
-				&& !isStartCell(nodeRowIndex, rightCellCol))
-			neighborList.add(new Node(nodeRowIndex, rightCellCol, node));
-
-		// Bottom neighbors
-		if (exist(bottomCellRow, nodeColumnIndex) && !isWall(bottomCellRow, nodeColumnIndex)
-				&& !isStartCell(bottomCellRow, nodeColumnIndex))
-			neighborList.add(new Node(bottomCellRow, nodeColumnIndex, node));
-		if (exist(bottomCellRow, rightDiagCol) && !isWall(bottomCellRow, rightDiagCol)
-				&& !isStartCell(bottomCellRow, rightDiagCol))
-			neighborList.add(new Node(bottomCellRow, rightDiagCol, node));
-		if (exist(bottomCellRow, leftDiagCol) && !isWall(bottomCellRow, leftDiagCol)
-				&& !isStartCell(bottomCellRow, leftDiagCol))
-			neighborList.add(new Node(bottomCellRow, leftDiagCol, node));
+		for (int row = topCellRow; row <= bottomCellRow; row++)
+			for (int column = leftCellCol; column <= rightCellCol; column++)
+				if (exist(row, column) && !isWall(row, column) && !isStartCell(row, column))
+					neighborList.add(new Node(row, column, node));
 
 		return neighborList;
 	}

@@ -39,7 +39,7 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 
 		window = new JFrame();
 		window.setContentPane(this);
-		window.setTitle("A* Pathfinding Visualization");
+		window.setTitle("Pathfinding Visualization");
 		window.getContentPane().setPreferredSize(new Dimension(1920, 1080));
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.pack();
@@ -48,6 +48,7 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 
 		guiFactory = new GUIFactory(window);
 		pathfindAStar = new AStar(window);
+		controlHandler();
 	}
 
 	public static void main(String[] args) {
@@ -130,6 +131,29 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 			this.pathfindAStar.removeBorder(xPosition, yPosition);
 			repaint();
 		}
+	}
+
+	public void controlHandler() {
+		guiFactory.startButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if(!!pathfindAStar.isRunning()) return;
+					
+					pathfindAStar.isRunning = true;
+					timer.start();
+				} catch (Exception ex) {
+					System.out.println(ex.getMessage());
+				}
+			}
+		});
+
+		guiFactory.clearButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pathfindAStar = new AStar(window);
+				timer.stop();
+				repaint();
+			}
+		});
 	}
 
 	@Override
