@@ -1,4 +1,3 @@
-
 public enum AlgorithmsEnum {
     AStar,
     Dijkstra,

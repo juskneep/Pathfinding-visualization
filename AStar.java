@@ -1,35 +1,27 @@
 import java.util.ArrayList;
-import java.util.List;
 import java.util.PriorityQueue;
 
 import javax.swing.JFrame;
 
-public class AStar {
-	PriorityQueue<Node> openList = new PriorityQueue<>();
+public class AStar extends Algorithm {
 	ArrayList<Node> closedList = new ArrayList<>();
-	ArrayList<Node> borderCollection = new ArrayList<>();
-	ArrayList<Node> pathToGoal = new ArrayList<>();
-	boolean isRunning;
-	Node startNode;
-	Node goalNode;
-	JFrame frame;
 
 	public AStar(JFrame frame) {
-		this.frame = frame;
+		super(frame);
+		openList = new PriorityQueue<Node>();
 	}
 
-	public void startAction() {
-		// if(startNode == null || goalNode == null) throw new Exception("Please set up
-		// the start and the end point!");
-		if (!openList.isEmpty()) {
-			Node currentNode = openList.peek();
+	@Override
+	public void findPath() {
+		if (!this.openList.isEmpty()) {
+			Node currentNode = ((PriorityQueue<Node>) openList).peek();
 			openList.remove(currentNode);
 
 			for (Node neighbor : getNeighbors(currentNode)) {
+
 				if (neighbor.getX() == goalNode.getX() && neighbor.getY() == goalNode.getY()) {
 					getPathToGoal(neighbor);
 					isRunning = false;
-					frame.repaint();
 					return;
 				}
 
@@ -43,50 +35,11 @@ public class AStar {
 				if (closedList.stream().anyMatch(node -> node.getX() == neighbor.getX()
 						&& node.getY() == neighbor.getY() && node.getfCost() < neighbor.getfCost()))
 					continue;
-				else {
+				else
 					openList.add(neighbor);
-				}
 			}
 			closedList.add(currentNode);
 		}
-		frame.repaint();
-	}
-
-	public List<Node> getNeighbors(Node node) {
-		List<Node> neighborList = new ArrayList<Node>();
-		int nodeRowIndex = node.getX();
-		int nodeColumnIndex = node.getY();
-
-		int topCellRow = nodeRowIndex - 1;
-		int leftCellCol = nodeColumnIndex - 1;
-		int rightCellCol = nodeColumnIndex + 1;
-		int bottomCellRow = nodeRowIndex + 1;
-
-		for (int row = topCellRow; row <= bottomCellRow; row++)
-			for (int column = leftCellCol; column <= rightCellCol; column++)
-				if (exist(row, column) && !isWall(row, column) && !isStartCell(row, column))
-					neighborList.add(new Node(row, column, node));
-
-		return neighborList;
-	}
-
-	public void getPathToGoal(Node node) {
-		Node currentNode = node;
-		while ((currentNode = currentNode.getParent()) != null) {
-			pathToGoal.add(currentNode);
-		}
-	}
-
-	private boolean isStartCell(int x, int y) {
-		return startNode.getX() == x && startNode.getY() == y;
-	}
-
-	public boolean exist(int rowIndex, int colIndex) {
-		return rowIndex >= 0 && rowIndex < Visualization.rowSize && colIndex >= 0 && colIndex < Visualization.colSize;
-	}
-
-	public boolean isWall(int rowIndex, int colIndex) {
-		return borderCollection.stream().anyMatch(node -> node.getX() == rowIndex && node.getY() == colIndex);
 	}
 
 	public int getH(Node current, Node goal) {
@@ -96,26 +49,5 @@ public class AStar {
 		if (deltaX > deltaY)
 			return 14 * deltaY + 10 * (deltaX - deltaY);
 		return 14 * deltaX + 10 * (deltaY - deltaX);
-	}
-
-	public void addBorder(int xCoor, int yCoor) {
-		// if (exist(row, col))
-		borderCollection.add(new Node(xCoor, yCoor));
-	}
-
-	public void removeBorder(int xCoor, int yCoor) {
-		borderCollection.removeIf(node -> node.getX() == xCoor && node.getY() == yCoor);
-	}
-
-	public void clearBorders() {
-		borderCollection.clear();
-	}
-
-	public void addToOpenList(Node node) {
-		openList.add(node);
-	}
-
-	public boolean isRunning() {
-		return isRunning;
 	}
 }

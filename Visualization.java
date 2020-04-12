@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -26,7 +25,7 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 	char currentKey = (char) 0;
 	Timer timer = new Timer(30, this);
 
-	AStar pathfindAStar;
+	Algorithm pathfindAlg;
 	GUIFactory guiFactory;
 
 	public Visualization() {
@@ -47,7 +46,7 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 		window.setVisible(true);
 
 		guiFactory = new GUIFactory(window);
-		pathfindAStar = new AStar(window);
+		pathfindAlg = new BreadthFirstSearch(window);
 		controlHandler();
 	}
 
@@ -78,33 +77,33 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 
 		// Draws borders
 		g.setColor(Color.black);
-		for (Node node : this.pathfindAStar.borderCollection) {
+		for (Node node : pathfindAlg.getBorders()) {
 			g.fillRect(node.getX() * size, node.getY() * size, size, size);
 		}
 
 		// Draws the start node
-		if (pathfindAStar.startNode != null) {
+		if (pathfindAlg.startNode != null) {
 			g.setColor(Color.green);
-			g.fillRect(pathfindAStar.startNode.getX() * size, pathfindAStar.startNode.getY() * size, size, size);
+			g.fillRect(pathfindAlg.startNode.getX() * size, pathfindAlg.startNode.getY() * size, size, size);
 		}
 
 		// Draws the goal node
-		if (pathfindAStar.goalNode != null) {
+		if (pathfindAlg.goalNode != null) {
 			g.setColor(Color.red);
-			g.fillRect(pathfindAStar.goalNode.getX() * size, pathfindAStar.goalNode.getY() * size, size, size);
+			g.fillRect(pathfindAlg.goalNode.getX() * size, pathfindAlg.goalNode.getY() * size, size, size);
 		}
 
 		g.setColor(new Color(175, 238, 238)); // Light blue
-		for (Node node : this.pathfindAStar.openList) {
-			if (node.getX() == pathfindAStar.startNode.getX() && node.getY() == pathfindAStar.startNode.getY())
+		for (Node node : this.pathfindAlg.openList) {
+			if (node.getX() == pathfindAlg.startNode.getX() && node.getY() == pathfindAlg.startNode.getY())
 				continue;
 
 			g.fillRect(node.getX() * size, node.getY() * size, size, size);
 		}
 
 		g.setColor(Color.yellow); // Light yellow
-		for (Node node : this.pathfindAStar.pathToGoal) {
-			if (node.getX() == pathfindAStar.startNode.getX() && node.getY() == pathfindAStar.startNode.getY())
+		for (Node node : this.pathfindAlg.pathToGoal) {
+			if (node.getX() == pathfindAlg.startNode.getX() && node.getY() == pathfindAlg.startNode.getY())
 				continue;
 			g.fillRect(node.getX() * size, node.getY() * size, size, size);
 		}
@@ -116,19 +115,19 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 			int yPosition = Math.round(e.getY() / size);
 
 			if (currentKey == 's') {
-				pathfindAStar.startNode = new Node(xPosition, yPosition);
-				pathfindAStar.addToOpenList(pathfindAStar.startNode);
+				pathfindAlg.startNode = new Node(xPosition, yPosition);
+				pathfindAlg.addToOpenList(pathfindAlg.startNode);
 			} else if (currentKey == 'e') {
-				pathfindAStar.goalNode = new Node(xPosition, yPosition);
+				pathfindAlg.goalNode = new Node(xPosition, yPosition);
 			} else {
-				this.pathfindAStar.addBorder(xPosition, yPosition);
+				this.pathfindAlg.addBorder(xPosition, yPosition);
 			}
 			repaint();
 		} else if (SwingUtilities.isRightMouseButton(e)) {
 			int xPosition = Math.round(e.getX() / size);
 			int yPosition = Math.round(e.getY() / size);
 
-			this.pathfindAStar.removeBorder(xPosition, yPosition);
+			this.pathfindAlg.removeBorder(xPosition, yPosition);
 			repaint();
 		}
 	}
@@ -137,9 +136,10 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 		guiFactory.startButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					if(!!pathfindAStar.isRunning()) return;
-					
-					pathfindAStar.isRunning = true;
+					if (!!pathfindAlg.isRunning())
+						return;
+
+					pathfindAlg.Run();
 					timer.start();
 				} catch (Exception ex) {
 					System.out.println(ex.getMessage());
@@ -149,7 +149,7 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 
 		guiFactory.clearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pathfindAStar = new AStar(window);
+				pathfindAlg = new BreadthFirstSearch(window);
 				timer.stop();
 				repaint();
 			}
@@ -200,8 +200,9 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (pathfindAStar.isRunning()) {
-			this.pathfindAStar.startAction();
+		if (pathfindAlg.isRunning()) {
+			this.pathfindAlg.findPath();
+			repaint();
 		}
 	}
 
