@@ -79,7 +79,8 @@ public class GUIFactory {
     }
 
     public void initializeDropDowns() {
-
+        availableAlgorithms.setBounds(algorithmsPaneX + 25, algorithmsPaneY + 10, 250, 25);
+        frame.add(availableAlgorithms);
     }
 
 }

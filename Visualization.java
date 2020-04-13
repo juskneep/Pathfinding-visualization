@@ -24,6 +24,7 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 	JFrame window;
 	char currentKey = (char) 0;
 	Timer timer = new Timer(30, this);
+	String selectedAlgorithm = "AStar";
 
 	Algorithm pathfindAlg;
 	GUIFactory guiFactory;
@@ -46,7 +47,7 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 		window.setVisible(true);
 
 		guiFactory = new GUIFactory(window);
-		pathfindAlg = AlgorithmFactory.createAlgorithm(AlgorithmsEnum.AStar, window);
+		pathfindAlg = AlgorithmFactory.createAlgorithm(selectedAlgorithm, window);
 		controlHandler();
 	}
 
@@ -149,10 +150,22 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 
 		guiFactory.clearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pathfindAlg = AlgorithmFactory.createAlgorithm(AlgorithmsEnum.AStar, window);
+				pathfindAlg = AlgorithmFactory.createAlgorithm(selectedAlgorithm, window);
 				timer.stop();
 				repaint();
 			}
+		});
+
+		guiFactory.availableAlgorithms.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				timer.stop();
+				String algName = String.valueOf(guiFactory.availableAlgorithms.getSelectedItem());
+				pathfindAlg = AlgorithmFactory.createAlgorithm(algName, window);
+				selectedAlgorithm = algName;
+			}
+			
 		});
 	}
 
