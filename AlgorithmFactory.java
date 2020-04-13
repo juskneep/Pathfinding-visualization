@@ -1,10 +1,17 @@
-public interface AlgorithmFactory {
-    void Run();
-    void findPath();
-    boolean isRunning();
-    void addBorder(int xCoor, int yCoor);
-    void removeBorder(int xCoor, int yCoor);
-    boolean exist(int rowIndex, int colIndex);
-    boolean isWall(int rowIndex, int colIndex);
-    boolean isStartCell(int x, int y);
+import javax.swing.JFrame;
+
+public class AlgorithmFactory {
+    public static Algorithm createAlgorithm(AlgorithmsEnum algorithmName, JFrame frame) {
+        switch (algorithmName) {
+            case AStar:
+                return new AStar(frame);
+            case BreadthFirstSearch:
+                return new BreadthFirstSearch(frame);
+            case Dijkstra:
+                return new Dijkstra(frame);
+            default:
+                // throw new InvalidAlgorithmException();
+                return null;
+        }
+    }
 }

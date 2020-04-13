@@ -46,7 +46,7 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 		window.setVisible(true);
 
 		guiFactory = new GUIFactory(window);
-		pathfindAlg = new BreadthFirstSearch(window);
+		pathfindAlg = AlgorithmFactory.createAlgorithm(AlgorithmsEnum.AStar, window);
 		controlHandler();
 	}
 
@@ -149,7 +149,7 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 
 		guiFactory.clearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pathfindAlg = new BreadthFirstSearch(window);
+				pathfindAlg = AlgorithmFactory.createAlgorithm(AlgorithmsEnum.AStar, window);
 				timer.stop();
 				repaint();
 			}

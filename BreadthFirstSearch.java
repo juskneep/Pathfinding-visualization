@@ -1,11 +1,10 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
 
 import javax.swing.JFrame;
 
-public class BreadthFirstSearch extends Algorithm implements AlgorithmFactory {
+public class BreadthFirstSearch extends Algorithm {
     List<Node> visitedNodes = new ArrayList<Node>();
 
     public BreadthFirstSearch(JFrame frame) {
