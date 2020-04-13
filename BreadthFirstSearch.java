@@ -1,10 +1,12 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.PriorityQueue;
 
 import javax.swing.JFrame;
 
 public class BreadthFirstSearch extends Algorithm implements AlgorithmFactory {
-    HashMap<Node, Node> visitedNodes = new HashMap<>();
+    List<Node> visitedNodes = new ArrayList<Node>();
 
     public BreadthFirstSearch(JFrame frame) {
         super(frame);
@@ -15,6 +17,7 @@ public class BreadthFirstSearch extends Algorithm implements AlgorithmFactory {
     public void findPath() {
 		if (!this.openList.isEmpty()) {
             Node currentNode = ((PriorityQueue<Node>) openList).peek();
+            openList.remove(currentNode);
             
             for (Node neighbor : getNeighbors(currentNode)) {
 				if (neighbor.getX() == goalNode.getX() && neighbor.getY() == goalNode.getY()) {
@@ -23,12 +26,20 @@ public class BreadthFirstSearch extends Algorithm implements AlgorithmFactory {
 					return;
                 }
                 
-                if(!visitedNodes.containsKey(neighbor)) {
+                if(!isVisited(neighbor)) {
                     openList.add(neighbor);
-                    visitedNodes.put(neighbor, currentNode);
+                    visitedNodes.add(neighbor);
                 }
             }
         }
     }
-    
+
+    public boolean isVisited(Node node) {
+        return visitedNodes.stream().anyMatch(currentNode -> currentNode.getX() == node.getX() && currentNode.getY() == node.getY());
+    }
+
+    public void addStartPoint(Node node) {
+        this.startNode = node;
+        this.visitedNodes.add(node);
+    }
 }

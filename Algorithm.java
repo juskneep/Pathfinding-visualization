@@ -77,6 +77,14 @@ public abstract class Algorithm {
 		openList.add(node);
 	}
 
+	public void addStartPoint(Node node) {
+		this.startNode = node;
+	}
+
+	public void addEndPoint(Node node) {
+		this.goalNode = node;
+	}
+
 	public void findPath() {
 	}
 }

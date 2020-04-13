@@ -115,7 +115,7 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 			int yPosition = Math.round(e.getY() / size);
 
 			if (currentKey == 's') {
-				pathfindAlg.startNode = new Node(xPosition, yPosition);
+				pathfindAlg.addStartPoint(new Node(xPosition, yPosition));
 				pathfindAlg.addToOpenList(pathfindAlg.startNode);
 			} else if (currentKey == 'e') {
 				pathfindAlg.goalNode = new Node(xPosition, yPosition);
