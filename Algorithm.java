@@ -15,7 +15,17 @@ public abstract class Algorithm {
 
     public Algorithm(JFrame frame) {
         this.frame = frame;
-    }
+	}
+	
+	public Algorithm(JFrame frame, Node startNode) {
+		this(frame);
+		this.startNode = startNode;
+	}
+
+	public Algorithm(JFrame frame, Node startNode, Node goalNode) {
+		this(frame, startNode);
+		this.goalNode = goalNode;
+	}
     
     public void Run() {
 		this.isRunning = true;

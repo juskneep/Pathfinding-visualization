@@ -66,6 +66,9 @@ public class GUIFactory {
         startButton.setBounds(mainControlPaneX + 200, mainControlPaneY + 50, 75, 25);
         clearButton.setBounds(mainControlPaneX + 25, mainControlPaneY + 50, 75, 25);
         dialognals.setBounds(mainControlPaneX + 25, mainControlPaneY + 10, 75, 25);
+        startButton.setFocusable(false);
+        clearButton.setFocusable(false);
+        dialognals.setFocusable(false);
 
         frame.add(startButton);
         frame.add(clearButton);
@@ -80,6 +83,7 @@ public class GUIFactory {
 
     public void initializeDropDowns() {
         availableAlgorithms.setBounds(algorithmsPaneX + 25, algorithmsPaneY + 10, 250, 25);
+        availableAlgorithms.setFocusable(false);
         frame.add(availableAlgorithms);
     }
 

@@ -2,7 +2,7 @@ import javax.swing.JFrame;
 
 public class Dijkstra extends Algorithm {
 
-    public Dijkstra(JFrame frame) {
+    public Dijkstra(JFrame frame, Node startNode, Node goalNode) {
         super(frame);
         // TODO Auto-generated constructor stub
     }

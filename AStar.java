@@ -6,8 +6,8 @@ import javax.swing.JFrame;
 public class AStar extends Algorithm {
 	ArrayList<Node> closedList = new ArrayList<>();
 
-	public AStar(JFrame frame) {
-		super(frame);
+	public AStar(JFrame frame, Node startNode, Node endNode) {
+		super(frame, startNode, endNode);
 		openList = new PriorityQueue<Node>();
 	}
 

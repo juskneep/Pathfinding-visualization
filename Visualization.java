@@ -12,8 +12,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.MouseInputListener;
 
 public class Visualization extends JPanel implements ActionListener, KeyListener, MouseInputListener {
@@ -25,6 +23,8 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 	char currentKey = (char) 0;
 	Timer timer = new Timer(30, this);
 	AlgorithmsEnum selectedAlgorithm = AlgorithmsEnum.AStar;
+	Node startNode;
+	Node goalNode;
 
 	Algorithm pathfindAlg;
 	GUIFactory guiFactory;
@@ -47,7 +47,7 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 		window.setVisible(true);
 
 		guiFactory = new GUIFactory(window);
-		pathfindAlg = AlgorithmFactory.createAlgorithm(selectedAlgorithm, window);
+		pathfindAlg = AlgorithmFactory.createAlgorithm(selectedAlgorithm, window, startNode, goalNode);
 		controlHandler();
 	}
 
@@ -56,12 +56,10 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 			@Override
 			public void run() {
 				try {
-					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-						| UnsupportedLookAndFeelException ex) {
+					new Visualization();
+				} catch (Exception ex) {
+					ex.printStackTrace();
 				}
-
-				new Visualization();
 			}
 		});
 	}
@@ -99,14 +97,14 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 			if (node.getX() == pathfindAlg.startNode.getX() && node.getY() == pathfindAlg.startNode.getY())
 				continue;
 
-			g.fillRect(node.getX() * size, node.getY() * size, size, size);
+			g.fillRect(node.getX() * size, node.getY() * size, size - 1, size - 1);
 		}
 
 		g.setColor(Color.yellow); // Light yellow
 		for (Node node : this.pathfindAlg.pathToGoal) {
 			if (node.getX() == pathfindAlg.startNode.getX() && node.getY() == pathfindAlg.startNode.getY())
 				continue;
-			g.fillRect(node.getX() * size, node.getY() * size, size, size);
+			g.fillRect(node.getX() * size, node.getY() * size, size - 1, size - 1);
 		}
 	}
 
@@ -116,10 +114,14 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 			int yPosition = Math.round(e.getY() / size);
 
 			if (currentKey == 's') {
-				pathfindAlg.addStartPoint(new Node(xPosition, yPosition));
+				Node startNode = new Node(xPosition, yPosition);
+				pathfindAlg.addStartPoint(startNode);
 				pathfindAlg.addToOpenList(pathfindAlg.startNode);
+				this.startNode = startNode;
 			} else if (currentKey == 'e') {
+				Node goalNode = new Node(xPosition, yPosition);
 				pathfindAlg.goalNode = new Node(xPosition, yPosition);
+				this.goalNode = goalNode;
 			} else {
 				this.pathfindAlg.addBorder(xPosition, yPosition);
 			}
@@ -139,18 +141,20 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 				try {
 					if (!!pathfindAlg.isRunning())
 						return;
-
+						
 					pathfindAlg.Run();
 					timer.start();
 				} catch (Exception ex) {
-					System.out.println(ex.getMessage());
+					ex.printStackTrace();
 				}
 			}
 		});
 
 		guiFactory.clearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pathfindAlg = AlgorithmFactory.createAlgorithm(selectedAlgorithm, window);
+				startNode = null;
+				goalNode = null;
+				pathfindAlg = AlgorithmFactory.createAlgorithm(selectedAlgorithm, window, startNode, goalNode);
 				timer.stop();
 				repaint();
 			}
@@ -160,10 +164,10 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				timer.stop();
-				AlgorithmsEnum algName = (AlgorithmsEnum)guiFactory.availableAlgorithms.getSelectedItem();
-				pathfindAlg = AlgorithmFactory.createAlgorithm(algName, window);
+				AlgorithmsEnum algName = (AlgorithmsEnum) guiFactory.availableAlgorithms.getSelectedItem();
+				pathfindAlg = AlgorithmFactory.createAlgorithm(algName, window, startNode, goalNode);
 				selectedAlgorithm = algName;
-			}			
+			}
 		});
 	}
 
@@ -211,9 +215,13 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (pathfindAlg.isRunning()) {
-			this.pathfindAlg.findPath();
-			repaint();
+		try {
+			if (pathfindAlg.isRunning()) {
+				this.pathfindAlg.findPath();
+				repaint();
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 
