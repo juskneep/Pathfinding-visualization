@@ -4,97 +4,110 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
-public abstract class Algorithm {	
+public abstract class Algorithm {
 	Collection<Node> openList;
 	ArrayList<Node> borderCollection = new ArrayList<>();
 	ArrayList<Node> pathToGoal = new ArrayList<>();
 	boolean isRunning;
+	boolean diagonal;
 	public Node startNode;
 	public Node goalNode;
-    JFrame frame;
+	JFrame frame;
 
-    public Algorithm(JFrame frame) {
-        this.frame = frame;
+	public Algorithm(final JFrame frame) {
+		this.frame = frame;
 	}
-	
-	public Algorithm(JFrame frame, Node startNode) {
+
+	public Algorithm(final JFrame frame, final Node startNode) {
 		this(frame);
 		this.startNode = startNode;
 	}
 
-	public Algorithm(JFrame frame, Node startNode, Node goalNode) {
+	public Algorithm(final JFrame frame, final Node startNode, final Node goalNode) {
 		this(frame, startNode);
 		this.goalNode = goalNode;
 	}
-    
-    public void Run() {
+
+	public void Run() {
 		this.isRunning = true;
-    }
-    
-    public void getPathToGoal(Node node) {
+	}
+
+	public void getPathToGoal(final Node node) {
 		Node currentNode = node;
 		while ((currentNode = currentNode.getParent()) != null)
 			pathToGoal.add(currentNode);
 	}
-	
-    public boolean isStartCell(int x, int y) {
-        return startNode.getX() == x && startNode.getY() == y;
-    }
 
-	public boolean exist(int rowIndex, int colIndex) {
+	public boolean isStartCell(final int x, final int y) {
+		return startNode.getX() == x && startNode.getY() == y;
+	}
+
+	public boolean exist(final int rowIndex, final int colIndex) {
 		return rowIndex >= 0 && rowIndex <= Visualization.rowSize && colIndex >= 0 && colIndex <= Visualization.colSize;
 	}
 
-	public boolean isWall(int rowIndex, int colIndex) {
+	public boolean isWall(final int rowIndex, final int colIndex) {
 		return borderCollection.stream().anyMatch(node -> node.getX() == rowIndex && node.getY() == colIndex);
 	}
-	
+
 	public ArrayList<Node> getBorders() {
 		return borderCollection;
 	}
-    
-    public void addBorder(int xCoor, int yCoor) {
+
+	public void addBorder(final int xCoor, final int yCoor) {
 		borderCollection.add(new Node(xCoor, yCoor));
 	}
 
-	public void removeBorder(int xCoor, int yCoor) {
+	public void removeBorder(final int xCoor, final int yCoor) {
 		borderCollection.removeIf(node -> node.getX() == xCoor && node.getY() == yCoor);
 	}
 
-	public List<Node> getNeighbors(Node node) {
-		List<Node> neighborList = new ArrayList<Node>();
-		int nodeRowIndex = node.getX();
-		int nodeColumnIndex = node.getY();
+	public List<Node> getNeighbors(final Node node) {
+		final List<Node> neighborList = new ArrayList<Node>();
+		final int nodeRowIndex = node.getX();
+		final int nodeColumnIndex = node.getY();
 
-		int topCellRow = nodeRowIndex - 1;
-		int leftCellCol = nodeColumnIndex - 1;
-		int rightCellCol = nodeColumnIndex + 1;
-		int bottomCellRow = nodeRowIndex + 1;
+		final int topCellRow = nodeRowIndex - 1;
+		final int leftCellCol = nodeColumnIndex - 1;
+		final int rightCellCol = nodeColumnIndex + 1;
+		final int bottomCellRow = nodeRowIndex + 1;
 
 		for (int row = topCellRow; row <= bottomCellRow; row++)
 			for (int column = leftCellCol; column <= rightCellCol; column++)
-				if (exist(row, column) && !isWall(row, column) && !isStartCell(row, column))
+				if (exist(row, column) && !isWall(row, column) && !isStartCell(row, column) && checkDiagonal(row, column, nodeRowIndex, nodeColumnIndex))
 					neighborList.add(new Node(row, column, node));
 
 		return neighborList;
+	}
+
+	private boolean checkDiagonal(int row, int column, int nodeRowIndex, int nodeColumnIndex) {
+		if(diagonal) return true;
+
+		return row == nodeRowIndex || nodeColumnIndex == column;
 	}
 
 	public boolean isRunning() {
 		return isRunning;
 	}
 
-	public void addToOpenList(Node node) {
+	public void addToOpenList(final Node node) {
 		openList.add(node);
 	}
 
-	public void addStartPoint(Node node) {
+	public void addStartPoint(final Node node) {
+		this.pathToGoal.clear();
+		this.openList.clear();
 		this.startNode = node;
 	}
 
-	public void addEndPoint(Node node) {
+	public void addEndPoint(final Node node) {
 		this.goalNode = node;
 	}
 
-	public void findPath() {
+	abstract public void findPath();
+
+	public void changeDiagonalPref() {
+		this.diagonal = !diagonal;
 	}
+
 }

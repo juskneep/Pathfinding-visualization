@@ -6,5 +6,11 @@ public class Dijkstra extends Algorithm {
         super(frame);
         // TODO Auto-generated constructor stub
     }
+
+    @Override
+    public void findPath() {
+        // TODO Auto-generated method stub
+
+    }
     
 }

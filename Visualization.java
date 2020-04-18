@@ -150,6 +150,13 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 			}
 		});
 
+		guiFactory.dialognals.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pathfindAlg.changeDiagonalPref();
+			}			
+		});
+
 		guiFactory.clearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				startNode = null;
