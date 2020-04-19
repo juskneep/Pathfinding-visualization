@@ -2,7 +2,6 @@ package frame;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,19 +56,6 @@ public class Visualization extends JPanel implements ActionListener, KeyListener
 		guiFactory = new GUIFactory(window);
 		pathfindAlg = AlgorithmFactory.createAlgorithm(selectedAlgorithm, window, startNode, goalNode);
 		controlHandler();
-	}
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					new Visualization();
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-			}
-		});
 	}
 
 	public void paintComponent(Graphics g) {
