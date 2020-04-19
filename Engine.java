@@ -1,9 +1,9 @@
-import frame.Visualization;
+import frame.Frame;
 
 public class Engine {
     public static void main(String[] args) {
         try {
-            new Visualization();
+            new Frame();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

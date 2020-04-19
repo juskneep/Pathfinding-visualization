@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
-import frame.Visualization;
+import frame.Frame;
 
 public abstract class Algorithm {
 	public Collection<Node> openList;
@@ -47,7 +47,7 @@ public abstract class Algorithm {
 	}
 
 	public boolean exist(final int rowIndex, final int colIndex) {
-		return rowIndex >= 0 && rowIndex <= Visualization.rowSize && colIndex >= 0 && colIndex <= Visualization.colSize;
+		return rowIndex >= 0 && rowIndex <= Frame.rowSize && colIndex >= 0 && colIndex <= Frame.colSize;
 	}
 
 	public boolean isWall(final int rowIndex, final int colIndex) {
