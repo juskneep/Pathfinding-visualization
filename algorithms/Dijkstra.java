@@ -1,3 +1,5 @@
+package algorithms;
+
 import javax.swing.JFrame;
 
 public class Dijkstra extends Algorithm {

@@ -1,3 +1,5 @@
+package frame;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -14,9 +16,15 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.event.MouseInputListener;
 
+import algorithms.Algorithm;
+import algorithms.Node;
+import constants.AlgorithmsEnum;
+import factories.AlgorithmFactory;
+import factories.GUIFactory;
+
 public class Visualization extends JPanel implements ActionListener, KeyListener, MouseInputListener {
-	static final int rowSize = 51;
-	static final int colSize = 26;
+	public static final int rowSize = 51;
+	public static final int colSize = 26;
 	static int size = 25;
 
 	JFrame window;

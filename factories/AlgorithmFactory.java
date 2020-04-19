@@ -1,4 +1,13 @@
+package factories;
+
 import javax.swing.JFrame;
+
+import algorithms.Dijkstra;
+import algorithms.AStar;
+import algorithms.Node;
+import constants.AlgorithmsEnum;
+import algorithms.Algorithm;
+import algorithms.BreadthFirstSearch;
 
 public class AlgorithmFactory {
     public static Algorithm createAlgorithm(AlgorithmsEnum algorithmName, JFrame frame, Node startNode, Node goalNode) {

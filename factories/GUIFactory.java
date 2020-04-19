@@ -1,3 +1,5 @@
+package factories;
+
 import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -5,6 +7,8 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+
+import constants.AlgorithmsEnum;
 
 public class GUIFactory {
     private final int mainControlPaneX = 950;
@@ -20,13 +24,13 @@ public class GUIFactory {
     JPanel mainControlPane = new JPanel();
     JPanel algorithmsPane = new JPanel();
     JPanel pathPane = new JPanel();
-    JButton startButton = new JButton("Start");
-    JButton clearButton = new JButton("Clear");
+    public JButton startButton = new JButton("Start");
+    public JButton clearButton = new JButton("Clear");
     JButton savePathButton = new JButton("Save Path");
     JButton generatePathButton = new JButton("Generate Random Path");
-    JCheckBox dialognals = new JCheckBox("Diagonals");
+    public JCheckBox dialognals = new JCheckBox("Diagonals");
     JSlider speedSlider = new JSlider();
-    JComboBox<AlgorithmsEnum> availableAlgorithms = new JComboBox(AlgorithmsEnum.values());
+    public JComboBox<AlgorithmsEnum> availableAlgorithms = new JComboBox(AlgorithmsEnum.values());
     // JComboBox savedPaths;
 
     public GUIFactory(JFrame frame) {

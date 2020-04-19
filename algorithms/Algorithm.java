@@ -1,13 +1,17 @@
+package algorithms;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import javax.swing.JFrame;
 
+import frame.Visualization;
+
 public abstract class Algorithm {
-	Collection<Node> openList;
+	public Collection<Node> openList;
 	ArrayList<Node> borderCollection = new ArrayList<>();
-	ArrayList<Node> pathToGoal = new ArrayList<>();
+	public ArrayList<Node> pathToGoal = new ArrayList<>();
 	boolean isRunning;
 	boolean diagonal;
 	public Node startNode;

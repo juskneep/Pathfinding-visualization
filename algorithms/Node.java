@@ -1,3 +1,5 @@
+package algorithms;
+
 public class Node implements Comparable<Node> {
 	private int fCost;
 	private int x, y, g, h;
