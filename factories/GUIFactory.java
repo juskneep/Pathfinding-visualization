@@ -1,10 +1,7 @@
 package factories;
 
 import java.lang.reflect.Field;
-
-import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import buttons.Button;
 import buttons.CheckBox;
@@ -48,44 +45,7 @@ public class GUIFactory {
                 frame.add(field);
             }
         }
-        /*
-         * initializePanels(); initializeButtons(); initializeSliders();
-         * initializeDropDowns();
-         */
 
         frame.repaint();
     }
-    /*
-     * public void initializePanels() {
-     * 
-     * pathPane.setBackground(new Color(0, 0, 0, 80)); pathPane.setBounds(pathPaneX,
-     * pathPaneY, 300, 100);
-     * 
-     * algorithmsPane.setBackground(new Color(0, 0, 0, 80));
-     * algorithmsPane.setBounds(algorithmsPaneX, algorithmsPaneY, 300, 100);
-     * 
-     * mainControlPane.setBackground(new Color(0, 0, 0, 80));
-     * mainControlPane.setBounds(mainControlPaneX, mainControlPaneY, 300, 100);
-     * 
-     * frame.add(mainControlPane); frame.add(algorithmsPane); frame.add(pathPane);
-     * 
-     * frame.repaint(); } public void initializeButtons() { // Main control buttons
-     * startButton.setBounds(mainControlPaneX + 200, mainControlPaneY + 50, 75, 25);
-     * clearButton.setBounds(mainControlPaneX + 25, mainControlPaneY + 50, 75, 25);
-     * dialognals.setBounds(mainControlPaneX + 25, mainControlPaneY + 10, 75, 25);
-     * startButton.setFocusable(false); clearButton.setFocusable(false);
-     * dialognals.setFocusable(false);
-     * 
-     * frame.add(startButton); frame.add(clearButton); frame.add(dialognals); }
-     * 
-     * public void initializeSliders() { speedSlider.setBounds(mainControlPaneX +
-     * 150, mainControlPaneY + 10, 75, 25);
-     * 
-     * frame.add(speedSlider); }
-     * 
-     * public void initializeDropDowns() {
-     * availableAlgorithms.setBounds(algorithmsPaneX + 25, algorithmsPaneY + 10,
-     * 250, 25); availableAlgorithms.setFocusable(false);
-     * frame.add(availableAlgorithms); }
-     */
 }
