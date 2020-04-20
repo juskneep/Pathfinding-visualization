@@ -7,6 +7,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.MouseInputListener;
 import javax.swing.Timer;
 
@@ -18,28 +21,28 @@ import factories.GUIFactory;
 import frame.Frame;
 
 public class ControlHandlerService implements ActionListener, KeyListener, MouseInputListener {
-    Frame frame;
-    GUIFactory guiFactory;
-    public Algorithm algorithm;
-    char currentKey = (char) 0;
-    AlgorithmsEnum selectedAlgorithm = AlgorithmsEnum.AStar;
-    Timer timer = new Timer(30, this);
+	Frame frame;
+	GUIFactory guiFactory;
+	public Algorithm algorithm;
+	char currentKey = (char) 0;
+	AlgorithmsEnum selectedAlgorithm = AlgorithmsEnum.AStar;
+	Timer timer = new Timer(50, this);
 
-    public ControlHandlerService(Frame frame) throws IllegalArgumentException, IllegalAccessException {
-        this.frame = frame;
-        guiFactory = new GUIFactory(frame.window);
-        
-        frame.addMouseListener(this);
+	public ControlHandlerService(Frame frame) throws IllegalArgumentException, IllegalAccessException {
+		this.frame = frame;
+		guiFactory = new GUIFactory(frame.window);
+
+		frame.addMouseListener(this);
 		frame.addMouseMotionListener(this);
-        frame.addKeyListener(this);
+		frame.addKeyListener(this);
 
-        algorithm = AlgorithmFactory.createAlgorithm(selectedAlgorithm, frame.window, frame.startNode, frame.goalNode);
+		algorithm = AlgorithmFactory.createAlgorithm(selectedAlgorithm, frame.window, frame.startNode, frame.goalNode);
 
-        controlHandler();
-        frame.repaint();
-    }
+		controlHandler();
+		frame.repaint();
+	}
 
-    public void handleMouseClick(MouseEvent e) {
+	public void handleMouseClick(MouseEvent e) {
 		if (SwingUtilities.isLeftMouseButton(e)) {
 			int xPosition = Math.round(e.getX() / Frame.size);
 			int yPosition = Math.round(e.getY() / Frame.size);
@@ -72,7 +75,7 @@ public class ControlHandlerService implements ActionListener, KeyListener, Mouse
 				try {
 					if (!!algorithm.isRunning())
 						return;
-						
+
 					algorithm.Run();
 					timer.start();
 				} catch (Exception ex) {
@@ -81,18 +84,26 @@ public class ControlHandlerService implements ActionListener, KeyListener, Mouse
 			}
 		});
 
+		guiFactory.speedSlider.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				timer.setDelay(100 - guiFactory.speedSlider.getValue());
+			}
+		});
+
 		guiFactory.dialognals.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				algorithm.changeDiagonalPref();
-			}			
+			}
 		});
 
 		guiFactory.clearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setFrameStartPoint(null);
 				frame.setFrameGoalPoint(null);
-				algorithm = AlgorithmFactory.createAlgorithm(selectedAlgorithm, frame.window, frame.startNode, frame.goalNode);
+				algorithm = AlgorithmFactory.createAlgorithm(selectedAlgorithm, frame.window, frame.startNode,
+						frame.goalNode);
 				timer.stop();
 				frame.repaint();
 			}
@@ -174,4 +185,4 @@ public class ControlHandlerService implements ActionListener, KeyListener, Mouse
 		// TODO Auto-generated method stub
 
 	}
-}   
+}

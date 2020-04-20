@@ -2,22 +2,22 @@ package algorithms;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import javax.swing.JFrame;
 
-public class BreadthFirstSearch extends Algorithm {
+public class DepthFirstSearch extends Algorithm {
     List<Node> visitedNodes = new ArrayList<Node>();
 
-    public BreadthFirstSearch(JFrame frame, Node startNode, Node goalNode) {
+    public DepthFirstSearch(JFrame frame, Node startNode, Node goalNode) {
         super(frame, startNode, goalNode);
-        openList = new ArrayList<Node>();        
+        openList = new Stack<Node>();        
     }
 
     @Override
     public void findPath() {
 		if (!this.openList.isEmpty()) {
-            Node currentNode = ((ArrayList<Node>) openList).get(0);
-            openList.remove(currentNode);
+            Node currentNode = ((Stack<Node>) openList).pop();
             
             for (Node neighbor : getNeighbors(currentNode)) {
 				if (neighbor.getX() == goalNode.getX() && neighbor.getY() == goalNode.getY()) {

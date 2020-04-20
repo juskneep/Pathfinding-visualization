@@ -18,29 +18,29 @@ public class AStar extends Algorithm {
 		if (!this.openList.isEmpty()) {
 			Node currentNode = ((PriorityQueue<Node>) openList).peek();
 			openList.remove(currentNode);
+			closedList.add(currentNode);
+
+			if (currentNode.getX() == goalNode.getX() && currentNode.getY() == goalNode.getY()) {
+				getPathToGoal(currentNode);
+				isRunning = false;
+				return;
+			}
 
 			for (Node neighbor : getNeighbors(currentNode)) {
-
-				if (neighbor.getX() == goalNode.getX() && neighbor.getY() == goalNode.getY()) {
-					getPathToGoal(neighbor);
-					isRunning = false;
-					return;
-				}
 
 				neighbor.setH(getH(neighbor, goalNode));
 				neighbor.setfCost(neighbor.getH() + neighbor.getG());
 
 				if (openList.stream().anyMatch(node -> node.getX() == neighbor.getX() && node.getY() == neighbor.getY()
-						&& node.getfCost() < neighbor.getfCost()))
+						&& node.getfCost() <= neighbor.getfCost()))
 					continue;
 
 				if (closedList.stream().anyMatch(node -> node.getX() == neighbor.getX()
-						&& node.getY() == neighbor.getY() && node.getfCost() < neighbor.getfCost()))
+						&& node.getY() == neighbor.getY() && node.getfCost() <= neighbor.getfCost()))
 					continue;
 				else
 					openList.add(neighbor);
 			}
-			closedList.add(currentNode);
 		}
 	}
 

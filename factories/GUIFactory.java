@@ -15,14 +15,14 @@ public class GUIFactory {
 
     Panel mainControlPane = new Panel(ApplicationConstants.mainControlPaneX, ApplicationConstants.mainControlPaneY);
     Panel algorithmsPane = new Panel(ApplicationConstants.algorithmsPaneX, ApplicationConstants.algorithmsPaneY);
-    Panel pathPane = new Panel(ApplicationConstants.pathPaneX, ApplicationConstants.pathPaneY);
+    //Panel pathPane = new Panel(ApplicationConstants.pathPaneX, ApplicationConstants.pathPaneY);
 
-    public Button startButton = new Button("Start", 200, 50);
-    public Button clearButton = new Button("Clear", 25, 50);
-    Button savePathButton = new Button("Save Path", 25, 25);
-    Button generatePathButton = new Button("Generate Path", 150, 50);
-    public CheckBox dialognals = new CheckBox("Diagonals", 25, 10);
-    Slider speedSlider = new Slider(150, 10);
+    public Button startButton = new Button("Start", 200, 100);
+    public Button clearButton = new Button("Clear", 25, 100);
+    //Button savePathButton = new Button("Save Path", 25, 25);
+    //Button generatePathButton = new Button("Generate Path", 150, 50);
+    public CheckBox dialognals = new CheckBox("Diagonals", 25, 50);
+    public Slider speedSlider = new Slider(50, 10);
     public ComboBox<AlgorithmsEnum> availableAlgorithms = new ComboBox<AlgorithmsEnum>(AlgorithmsEnum.values(), 25, 10);
 
     public GUIFactory(JFrame frame) throws IllegalArgumentException, IllegalAccessException {
@@ -33,7 +33,7 @@ public class GUIFactory {
     public void initializeButtons() {
         mainControlPane.addComponents(startButton, clearButton, dialognals, speedSlider);
         algorithmsPane.addComponents(availableAlgorithms);
-        pathPane.addComponents(savePathButton, generatePathButton);
+        //pathPane.addComponents(savePathButton, generatePathButton);
     }
 
     public void initializeControls(JFrame frame) throws IllegalArgumentException, IllegalAccessException {

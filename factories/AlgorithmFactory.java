@@ -8,6 +8,7 @@ import algorithms.Node;
 import constants.AlgorithmsEnum;
 import algorithms.Algorithm;
 import algorithms.BreadthFirstSearch;
+import algorithms.DepthFirstSearch;
 
 public class AlgorithmFactory {
     public static Algorithm createAlgorithm(AlgorithmsEnum algorithmName, JFrame frame, Node startNode, Node goalNode) {
@@ -17,7 +18,9 @@ public class AlgorithmFactory {
             case Dijkstra:
                 return new Dijkstra(frame, startNode, goalNode);
             case BreadthFirstSearch:
-                return new BreadthFirstSearch(frame);
+                return new BreadthFirstSearch(frame, startNode, goalNode);
+            case DepthFirstSearch:
+                return new DepthFirstSearch(frame, startNode, goalNode);
             default:
                 // throw new InvalidAlgorithmException();
                 return null;

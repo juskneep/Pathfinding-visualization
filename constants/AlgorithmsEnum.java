@@ -4,4 +4,5 @@ public enum AlgorithmsEnum {
     AStar,
     Dijkstra,
     BreadthFirstSearch,
+    DepthFirstSearch
 }

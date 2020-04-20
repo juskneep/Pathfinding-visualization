@@ -50,20 +50,20 @@ public class Frame extends JPanel {
 		if(controlHandlerService == null) return;
 
 		// Draws borders
-		g.setColor(Color.black);
+		g.setColor(new Color(128, 128, 128));
 		for (Node node : controlHandlerService.algorithm.getBorders()) {
 			g.fillRect(node.getX() * size, node.getY() * size, size, size);
 		}
 
 		// Draws the start node
 		if (controlHandlerService.algorithm.startNode != null) {
-			g.setColor(Color.green);
+			g.setColor(new Color(0, 221, 0));
 			g.fillRect(controlHandlerService.algorithm.startNode.getX() * size, controlHandlerService.algorithm.startNode.getY() * size, size, size);
 		}
 
 		// Draws the goal node
 		if (controlHandlerService.algorithm.goalNode != null) {
-			g.setColor(Color.red);
+			g.setColor(new Color(238, 68, 0));
 			g.fillRect(controlHandlerService.algorithm.goalNode.getX() * size, controlHandlerService.algorithm.goalNode.getY() * size, size, size);
 		}
 
@@ -75,7 +75,7 @@ public class Frame extends JPanel {
 			g.fillRect(node.getX() * size, node.getY() * size, size - 1, size - 1);
 		}
 
-		g.setColor(Color.yellow); // Light yellow
+		g.setColor(new Color(255, 254, 106)); // Light yellow
 		for (Node node : this.controlHandlerService.algorithm.pathToGoal) {
 			if (node.getX() == controlHandlerService.algorithm.startNode.getX() && node.getY() == controlHandlerService.algorithm.startNode.getY())
 				continue;
