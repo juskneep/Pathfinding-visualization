@@ -25,7 +25,7 @@ public class ControlHandlerService implements ActionListener, KeyListener, Mouse
     AlgorithmsEnum selectedAlgorithm = AlgorithmsEnum.AStar;
     Timer timer = new Timer(30, this);
 
-    public ControlHandlerService(Frame frame) {
+    public ControlHandlerService(Frame frame) throws IllegalArgumentException, IllegalAccessException {
         this.frame = frame;
         guiFactory = new GUIFactory(frame.window);
         

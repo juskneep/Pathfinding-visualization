@@ -20,7 +20,7 @@ public class Frame extends JPanel {
 	public Node startNode;
 	public Node goalNode;
 
-	public Frame() {
+	public Frame() throws IllegalArgumentException, IllegalAccessException {
 		setFocusable(true);
 		setLayout(null);
 
@@ -46,7 +46,7 @@ public class Frame extends JPanel {
 			}
 		}
 
-		//
+		// Skip the ingredients drawing if the algorithm is not initialized yet
 		if(controlHandlerService == null) return;
 
 		// Draws borders
