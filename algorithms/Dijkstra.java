@@ -1,6 +1,7 @@
 package algorithms;
 
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.PriorityQueue;
 import javax.swing.JFrame;
 
@@ -26,16 +27,29 @@ public class Dijkstra extends Algorithm {
                 }
 
                 int newCost = cost.get(currentNode) + 1;
-                if (cost.containsKey(neighbor) && newCost >= cost.get(neighbor))
-                    return;
+                if (this.containsNode(neighbor) && newCost >= getNodeCost(neighbor))
+                    continue;
 
-                neighbor.setH(newCost);
-                neighbor.setfCost(newCost + 1);
+                neighbor.setfCost(newCost);
 
                 cost.put(neighbor, neighbor.getfCost());
                 openList.add(neighbor);
             }
         }
+    }
+
+    private boolean containsNode(Node neighbor) {
+        return this.cost.keySet().stream()
+                .anyMatch(node -> node.getX() == neighbor.getX() && node.getY() == neighbor.getY());
+    }
+
+    private int getNodeCost(Node neighbor) {
+        Optional<Node> result = this.cost.keySet().stream()
+                .filter(node -> node.getX() == neighbor.getX() && node.getY() == neighbor.getY()).findFirst();
+
+        if(!result.isPresent()) return Integer.MIN_VALUE;
+        
+        return this.cost.get(result.get());
     }
 
     @Override
