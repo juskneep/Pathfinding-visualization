@@ -1,7 +1,5 @@
 package buttons;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JButton;
@@ -10,11 +8,6 @@ import constants.ApplicationConstants;
 
 public class Button extends JButton implements MouseListener {
     private static final long serialVersionUID = 7264149987653918498L;
-    
-    Font defaultFont = new Font("Gill Sans MT", Font.BOLD, 14);
-    Color textColor = Color.decode("#ffffff");
-    Color backgroundColor = Color.decode("#000000");
-    Color hoverColor = Color.decode("#00aced");
 
     public Button(String title, int positionX, int positionY) {
         super();
@@ -23,9 +16,9 @@ public class Button extends JButton implements MouseListener {
         setFocusPainted(false);
         setText(title.toUpperCase());
         setBorder(null);
-        setForeground(textColor);
-        setBackground(backgroundColor);
-        setFont(defaultFont);
+        setForeground(ApplicationConstants.defaultTextColor);
+        setBackground(ApplicationConstants.buttonBackgroundColor);
+        setFont(ApplicationConstants.defaultTextFont);
         setOpaque(true);
         addMouseListener(this);
     }
@@ -37,13 +30,13 @@ public class Button extends JButton implements MouseListener {
     @Override
     public void mouseEntered(MouseEvent e) { 
         if (e.getSource()==this) {  
-            this.setBackground(this.hoverColor); 
+            this.setBackground(ApplicationConstants.buttonHoverColor); 
         }
     }
     @Override
     public void mouseExited(MouseEvent e) { 
         if (e.getSource()==this) { 
-            this.setBackground(this.backgroundColor); 
+            this.setBackground(ApplicationConstants.buttonBackgroundColor); 
         }
     }
 }
