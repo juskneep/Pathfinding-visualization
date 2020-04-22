@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.swing.JFrame;
-
 import frame.Frame;
 
 public abstract class Algorithm {
@@ -16,21 +14,28 @@ public abstract class Algorithm {
 	boolean diagonal;
 	public Node startNode;
 	public Node goalNode;
-	JFrame frame;
 
-	public Algorithm(final JFrame frame) {
-		this.frame = frame;
+	public Algorithm() {
+		borderCollection = new ArrayList<>();
+		pathToGoal = new ArrayList<>();
 	}
 
-	public Algorithm(final JFrame frame, final Node startNode) {
-		this(frame);
+	public Algorithm(Node startNode) {
+		this();
 		this.startNode = startNode;
 	}
 
-	public Algorithm(final JFrame frame, final Node startNode, final Node goalNode) {
-		this(frame, startNode);
+	public Algorithm(Node startNode, Node goalNode) {
+		this(startNode);
 		this.goalNode = goalNode;
 	}
+
+	public Algorithm(Node startNode, Node goalNode, Collection<Node> borders) {
+		this(startNode);
+		this.goalNode = goalNode;
+		this.borderCollection.addAll(borders);
+	}
+
 
 	public void Run() {
 		this.isRunning = true;

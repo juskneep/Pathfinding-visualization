@@ -1,15 +1,14 @@
 package algorithms;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-
-import javax.swing.JFrame;
 
 public class BreadthFirstSearch extends Algorithm {
     List<Node> visitedNodes = new ArrayList<Node>();
 
-    public BreadthFirstSearch(JFrame frame, Node startNode, Node goalNode) {
-        super(frame, startNode, goalNode);
+    public BreadthFirstSearch(Node startNode, Node goalNode, Collection<Node> borders) {
+        super(startNode, goalNode, borders);
         openList = new ArrayList<Node>();        
     }
 

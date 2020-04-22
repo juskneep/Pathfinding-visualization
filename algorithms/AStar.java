@@ -1,15 +1,14 @@
 package algorithms;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.PriorityQueue;
-
-import javax.swing.JFrame;
 
 public class AStar extends Algorithm {
 	ArrayList<Node> closedList = new ArrayList<>();
 
-	public AStar(JFrame frame, Node startNode, Node endNode) {
-		super(frame, startNode, endNode);
+	public AStar(Node startNode, Node endNode, Collection<Node> borders) {
+		super(startNode, endNode, borders);
 		openList = new PriorityQueue<Node>();
 	}
 

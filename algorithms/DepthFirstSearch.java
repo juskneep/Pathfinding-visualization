@@ -1,16 +1,15 @@
 package algorithms;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Stack;
-
-import javax.swing.JFrame;
 
 public class DepthFirstSearch extends Algorithm {
     List<Node> visitedNodes = new ArrayList<Node>();
 
-    public DepthFirstSearch(JFrame frame, Node startNode, Node goalNode) {
-        super(frame, startNode, goalNode);
+    public DepthFirstSearch(Node startNode, Node goalNode, Collection<Node> borders) {
+        super(startNode, goalNode, borders);
         openList = new Stack<Node>();        
     }
 

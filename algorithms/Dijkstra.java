@@ -1,5 +1,6 @@
 package algorithms;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.PriorityQueue;
@@ -8,8 +9,8 @@ import javax.swing.JFrame;
 public class Dijkstra extends Algorithm {
     HashMap<Node, Integer> cost = new HashMap<>();
 
-    public Dijkstra(JFrame frame, Node startNode, Node goalNode) {
-        super(frame, startNode, goalNode);
+    public Dijkstra(Node startNode, Node goalNode, Collection<Node> borders) {
+        super(startNode, goalNode, borders);
         openList = new PriorityQueue<Node>();
     }
 

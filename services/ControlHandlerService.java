@@ -36,7 +36,7 @@ public class ControlHandlerService implements ActionListener, KeyListener, Mouse
 		frame.addMouseMotionListener(this);
 		frame.addKeyListener(this);
 
-		algorithm = AlgorithmFactory.createAlgorithm(selectedAlgorithm, frame.window, frame.startNode, frame.goalNode);
+		algorithm = AlgorithmFactory.createAlgorithm(selectedAlgorithm, frame.startNode, frame.goalNode);
 
 		controlHandler();
 		frame.repaint();
@@ -102,8 +102,7 @@ public class ControlHandlerService implements ActionListener, KeyListener, Mouse
 			public void actionPerformed(ActionEvent e) {
 				frame.setFrameStartPoint(null);
 				frame.setFrameGoalPoint(null);
-				algorithm = AlgorithmFactory.createAlgorithm(selectedAlgorithm, frame.window, frame.startNode,
-						frame.goalNode);
+				algorithm = AlgorithmFactory.createAlgorithm(selectedAlgorithm, frame.startNode, frame.goalNode);
 				timer.stop();
 				frame.repaint();
 			}
@@ -114,7 +113,7 @@ public class ControlHandlerService implements ActionListener, KeyListener, Mouse
 			public void actionPerformed(ActionEvent e) {
 				timer.stop();
 				AlgorithmsEnum algName = (AlgorithmsEnum) guiFactory.availableAlgorithms.getSelectedItem();
-				algorithm = AlgorithmFactory.createAlgorithm(algName, frame.window, frame.startNode, frame.goalNode);
+				algorithm = AlgorithmFactory.createAlgorithm(algName, frame.startNode, frame.goalNode, algorithm.getBorders());
 				selectedAlgorithm = algName;
 			}
 		});

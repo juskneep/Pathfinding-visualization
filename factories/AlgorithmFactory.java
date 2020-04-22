@@ -1,6 +1,7 @@
 package factories;
 
-import javax.swing.JFrame;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import algorithms.Dijkstra;
 import algorithms.AStar;
@@ -11,19 +12,22 @@ import algorithms.BreadthFirstSearch;
 import algorithms.DepthFirstSearch;
 
 public class AlgorithmFactory {
-    public static Algorithm createAlgorithm(AlgorithmsEnum algorithmName, JFrame frame, Node startNode, Node goalNode) {
+    public static Algorithm createAlgorithm(AlgorithmsEnum algorithmName, Node startNode, Node goalNode, Collection<Node> borders) {
         switch (algorithmName) {
             case AStar:
-                return new AStar(frame, startNode, goalNode);
+                return new AStar(startNode, goalNode, borders);
             case Dijkstra:
-                return new Dijkstra(frame, startNode, goalNode);
+                return new Dijkstra(startNode, goalNode, borders);
             case BreadthFirstSearch:
-                return new BreadthFirstSearch(frame, startNode, goalNode);
+                return new BreadthFirstSearch(startNode, goalNode, borders);
             case DepthFirstSearch:
-                return new DepthFirstSearch(frame, startNode, goalNode);
+                return new DepthFirstSearch(startNode, goalNode, borders);
             default:
-                // throw new InvalidAlgorithmException();
                 return null;
         }
+    }
+
+    public static Algorithm createAlgorithm(AlgorithmsEnum algorithmName, Node startNode, Node goalNode) {
+        return AlgorithmFactory.createAlgorithm(algorithmName, startNode, goalNode, new ArrayList<Node>());
     }
 }
