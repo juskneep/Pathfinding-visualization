@@ -49,12 +49,13 @@ public class ControlHandlerService implements ActionListener, KeyListener, Mouse
 		if (SwingUtilities.isLeftMouseButton(e)) {
 			if (currentKey == 's') {
 				Node startNode = new Node(xPosition, yPosition);
+
 				algorithm.addStartPoint(startNode);
-				//algorithm.addToOpenList(algorithm.startNode);
+
 				frame.setFrameStartPoint(startNode);
 			} else if (currentKey == 'e') {
 				Node goalNode = new Node(xPosition, yPosition);
-				algorithm.goalNode = new Node(xPosition, yPosition);
+				algorithm.goalNode = goalNode;
 				frame.setFrameGoalPoint(goalNode);
 			} else {
 				this.algorithm.addBorder(xPosition, yPosition);
@@ -91,7 +92,7 @@ public class ControlHandlerService implements ActionListener, KeyListener, Mouse
 		guiFactory.dialognals.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				algorithm.changeDiagonalPref();
+				algorithm.changeDiagonalPref(guiFactory.dialognals.isSelected());
 			}
 		});
 
@@ -100,6 +101,7 @@ public class ControlHandlerService implements ActionListener, KeyListener, Mouse
 				frame.setFrameStartPoint(null);
 				frame.setFrameGoalPoint(null);
 				algorithm = AlgorithmFactory.createAlgorithm(selectedAlgorithm, frame.startNode, frame.goalNode);
+				algorithm.changeDiagonalPref(guiFactory.dialognals.isSelected());
 				timer.stop();
 				frame.repaint();
 			}
@@ -111,7 +113,8 @@ public class ControlHandlerService implements ActionListener, KeyListener, Mouse
 				timer.stop();
 				AlgorithmsEnum algName = (AlgorithmsEnum) guiFactory.availableAlgorithms.getSelectedItem();
 				algorithm = AlgorithmFactory.createAlgorithm(algName, frame.startNode, frame.goalNode, algorithm.getBorders());
-				algorithm.addStartPoint(frame.startNode);
+				if(frame.startNode != null) algorithm.addStartPoint(frame.startNode);
+				algorithm.changeDiagonalPref(guiFactory.dialognals.isSelected());
 				selectedAlgorithm = algName;
 			}
 		});

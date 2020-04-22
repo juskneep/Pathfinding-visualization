@@ -116,8 +116,8 @@ public abstract class Algorithm {
 
 	abstract public void findPath();
 
-	public void changeDiagonalPref() {
-		this.diagonal = !diagonal;
+	public void changeDiagonalPref(boolean diagonal) {
+		this.diagonal = diagonal;
 	}
 
 }
