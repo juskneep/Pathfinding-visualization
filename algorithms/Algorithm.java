@@ -14,12 +14,12 @@ public abstract class Algorithm {
 	Node startNode;
 	Node goalNode;
 
-	public Algorithm() {
+	private Algorithm() {
 		borderCollection = new ArrayList<>();
 		pathToGoal = new ArrayList<>();
 	}
 
-	public Algorithm(Node startNode, Node goalNode, Collection<Node> borders, boolean diagonalPref) {
+	protected Algorithm(Node startNode, Node goalNode, Collection<Node> borders, boolean diagonalPref) {
 		this();
 		this.startNode = startNode;
 		this.goalNode = goalNode;
@@ -42,15 +42,15 @@ public abstract class Algorithm {
 		return this.pathToGoal;
 	}
 
-	public boolean isStartCell(int x, int y) {
+	private boolean isStartCell(int x, int y) {
 		return startNode.getX() == x && startNode.getY() == y;
 	}
 
-	public boolean exist(int rowIndex, int colIndex) {
+	private boolean exist(int rowIndex, int colIndex) {
 		return rowIndex >= 0 && rowIndex < Frame.rowSize && colIndex >= 0 && colIndex < Frame.colSize;
 	}
 
-	public boolean isWall(int rowIndex, int colIndex) {
+	private boolean isWall(int rowIndex, int colIndex) {
 		return borderCollection.stream().anyMatch(node -> node.getX() == rowIndex && node.getY() == colIndex);
 	}
 
@@ -66,7 +66,7 @@ public abstract class Algorithm {
 		borderCollection.removeIf(node -> node.getX() == xCoor && node.getY() == yCoor);
 	}
 
-	public List<Node> getNeighbors(Node node) {
+	protected List<Node> getNeighbors(Node node) {
 		List<Node> neighborList = new ArrayList<Node>();
 		int nodeRowIndex = node.getX();
 		int nodeColumnIndex = node.getY();

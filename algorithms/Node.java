@@ -29,7 +29,6 @@ public class Node implements Comparable<Node> {
 		return this.g;
 	}
 
-	// Keep in mind for the start point with no parent element
 	// Private due to auto generating
 	private void setG() {
 		if (parent == null)

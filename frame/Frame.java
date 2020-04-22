@@ -19,7 +19,6 @@ public class Frame extends JPanel {
 	public static int size = 25;
 
 	JFrame window;
-	ControlHandlerService controlHandlerService;
 	Node startNode;
 	Node goalNode;
 	ArrayList<Node> borders, openList, pathToGoal;
@@ -28,7 +27,7 @@ public class Frame extends JPanel {
 		setFocusable(true);
 		setLayout(null);
 
-		window = new JFrame();
+		this.window = new JFrame();
 		window.setContentPane(this);
 		window.setTitle("Pathfinding Visualization");
 		this.setPreferredSize(new Dimension(1920, 1080));
@@ -37,15 +36,16 @@ public class Frame extends JPanel {
 		window.setLocationRelativeTo(null);
 		window.setVisible(true);
 
-		borders = new ArrayList<Node>();
-		openList = new ArrayList<Node>();
-		pathToGoal = new ArrayList<Node>();
+		this.borders = new ArrayList<Node>();
+		this.openList = new ArrayList<Node>();
+		this.pathToGoal = new ArrayList<Node>();
 
 		new ControlHandlerService(this);
 	}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+
 		// Draws grid
 		g.setColor(Color.lightGray);
 		for (int j = 0; j < this.getHeight(); j += size) {
@@ -72,6 +72,7 @@ public class Frame extends JPanel {
 			g.fillRect(goalNode.getX() * size, goalNode.getY() * size, size, size);
 		}
 
+		//Nodes so far
 		g.setColor(new Color(175, 238, 238)); // Light blue
 		for (Node node : openList) {
 			if (isStartNode(node))
@@ -80,6 +81,7 @@ public class Frame extends JPanel {
 			g.fillRect(node.getX() * size, node.getY() * size, size - 1, size - 1);
 		}
 
+		//Path to goal
 		g.setColor(new Color(255, 254, 106)); // Light yellow
 		for (Node node : pathToGoal) {
 			if (isStartNode(node))
@@ -90,7 +92,7 @@ public class Frame extends JPanel {
 	}
 
 	private boolean isStartNode(Node node) {
-		return startNode != null && node.getX() == startNode.getX() && node.getY() == startNode.getY();
+		return this.startNode != null && node.getX() == this.startNode.getX() && node.getY() == this.startNode.getY();
 	}
 
 	public void addToOpenList(Node node) {
@@ -103,10 +105,12 @@ public class Frame extends JPanel {
 
 	public void addBorder(Node node) {
 		this.borders.add(node);
+		repaint();
 	}
 
 	public void removeBorder(int positionX, int positionY) {
 		this.borders.removeIf(node -> node.getX() == positionX && node.getY() == positionY);
+		repaint();
 	}
 
 	public void setPathToGoal(Collection<Node> path) {
@@ -115,28 +119,30 @@ public class Frame extends JPanel {
 
 	public void setFrameStartPoint(Node startNode) {
 		this.startNode = startNode;
+		repaint();
 	}
 
 	public void setFrameGoalPoint(Node goalNode) {
 		this.goalNode = goalNode;
+		repaint();
 	}
 
 	public Node getFrameStartPoint() {
-		return startNode;
+		return this.startNode;
 	}
 
 	public Node getFrameGoalPoint() {
-		return goalNode;
+		return this.goalNode;
 	}
 
 	public JFrame getFrame() {
-		return window;
+		return this.window;
 	}
 
 	public void clearFrame() {
-		borders = new ArrayList<Node>();
-		openList = new ArrayList<Node>();
-		pathToGoal = new ArrayList<Node>();
+		this.borders = new ArrayList<Node>();
+		this.openList = new ArrayList<Node>();
+		this.pathToGoal = new ArrayList<Node>();
 		setFrameGoalPoint(null);
 		setFrameStartPoint(null);
 		repaint();

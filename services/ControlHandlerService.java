@@ -36,13 +36,12 @@ public class ControlHandlerService implements ActionListener, KeyListener, Mouse
 		frame.addMouseMotionListener(this);
 		frame.addKeyListener(this);
 
-		algorithm = AlgorithmFactory.createAlgorithm(selectedAlgorithm, frame.getFrameStartPoint(), frame.getFrameGoalPoint(), guiFactory.dialognals.isSelected());
+		algorithm = AlgorithmFactory.createAlgorithm(selectedAlgorithm, frame.getFrameStartPoint(), frame.getFrameGoalPoint(), guiFactory.getDiagonalPref());
 
-		controlHandler();
-		frame.repaint();
+		attachEventListeners();
 	}
 
-	public void handleMouseClick(MouseEvent e) {
+	private void handleMouseClick(MouseEvent e) {
 		int xPosition = Math.round(e.getX() / Frame.size);
 		int yPosition = Math.round(e.getY() / Frame.size);
 
@@ -54,15 +53,14 @@ public class ControlHandlerService implements ActionListener, KeyListener, Mouse
 			} else {
 				addBorder(new Node(xPosition, yPosition));
 			}
-			frame.repaint();
 		} else if (SwingUtilities.isRightMouseButton(e)) {
 			removeBorder(xPosition, yPosition);
 			frame.repaint();
 		}
 	}
 
-	public void controlHandler() {
-		guiFactory.startButton.addActionListener(new ActionListener() {
+	private void attachEventListeners() {
+		guiFactory.getStartButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					if (!!algorithm.isRunning())
@@ -76,34 +74,34 @@ public class ControlHandlerService implements ActionListener, KeyListener, Mouse
 			}
 		});
 
-		guiFactory.speedSlider.addChangeListener(new ChangeListener() {
+		guiFactory.getSpeSlider().addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				timer.setDelay(100 - guiFactory.speedSlider.getValue());
+				timer.setDelay(guiFactory.getSpeedValue());
 			}
 		});
 
-		guiFactory.dialognals.addActionListener(new ActionListener() {
+		guiFactory.getDiagonalBox().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				algorithm.changeDiagonalPref(guiFactory.dialognals.isSelected());
+				algorithm.changeDiagonalPref(guiFactory.getDiagonalPref());
 			}
 		});
 
-		guiFactory.clearButton.addActionListener(new ActionListener() {
+		guiFactory.getClearButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				timer.stop();
-				algorithm = AlgorithmFactory.createAlgorithm(selectedAlgorithm, frame.getFrameStartPoint(), frame.getFrameGoalPoint(), guiFactory.dialognals.isSelected(), algorithm.getBorders());
+				algorithm = AlgorithmFactory.createAlgorithm(selectedAlgorithm, frame.getFrameStartPoint(), frame.getFrameGoalPoint(), guiFactory.getDiagonalPref(), algorithm.getBorders());
 				frame.clearFrame();
 			}
 		});
 
-		guiFactory.availableAlgorithms.addActionListener(new ActionListener() {
+		guiFactory.getAlgorithmDropDown().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				timer.stop();
-				selectedAlgorithm = (AlgorithmsEnum) guiFactory.availableAlgorithms.getSelectedItem();
-				algorithm = AlgorithmFactory.createAlgorithm(selectedAlgorithm, frame.getFrameStartPoint(), frame.getFrameGoalPoint(), guiFactory.dialognals.isSelected(), frame.getBorderCollection());
+				selectedAlgorithm = guiFactory.getSelectedAlgorithm();
+				algorithm = AlgorithmFactory.createAlgorithm(selectedAlgorithm, frame.getFrameStartPoint(), frame.getFrameGoalPoint(), guiFactory.getDiagonalPref(), frame.getBorderCollection());
 
 				//If you have already set a start point
 				if(frame.getFrameStartPoint() != null) setStartPoint(frame.getFrameStartPoint());
