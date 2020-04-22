@@ -14,7 +14,8 @@ import constants.ApplicationConstants;
 public class GUIFactory {
 
     Panel mainControlPane = new Panel(ApplicationConstants.mainControlPaneX, ApplicationConstants.mainControlPaneY);
-    Panel algorithmsPane = new Panel(ApplicationConstants.algorithmsPaneX, ApplicationConstants.algorithmsPaneY, ApplicationConstants.algorithmPanelWidth, ApplicationConstants.algorithmPanelHeight);
+    Panel algorithmsPane = new Panel(ApplicationConstants.algorithmsPaneX, ApplicationConstants.algorithmsPaneY,
+            ApplicationConstants.algorithmPanelWidth, ApplicationConstants.algorithmPanelHeight);
 
     public Button startButton = new Button("Start", 200, 100);
     public Button clearButton = new Button("Clear", 25, 100);
@@ -22,7 +23,7 @@ public class GUIFactory {
     public Slider speedSlider = new Slider(50, 10);
     public ComboBox<AlgorithmsEnum> availableAlgorithms = new ComboBox<AlgorithmsEnum>(AlgorithmsEnum.values(), 25, 10);
 
-    public GUIFactory(JFrame frame) throws IllegalArgumentException, IllegalAccessException {
+    public GUIFactory(JFrame frame) {
         initializeButtons();
         initializeControls(frame);
     }
@@ -32,13 +33,21 @@ public class GUIFactory {
         algorithmsPane.addComponents(availableAlgorithms);
     }
 
-    public void initializeControls(JFrame frame) throws IllegalArgumentException, IllegalAccessException {
+    public void initializeControls(JFrame frame) {
         for (Field component : this.getClass().getDeclaredFields()) {
             component.setAccessible(true);
 
             if (Panel.class.isAssignableFrom(component.getType())) {
-                Panel field = (Panel) component.get(this);
-                frame.add(field);
+                Panel field = null;
+
+                try {
+                    field = (Panel) component.get(this);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (field != null)
+                    frame.add(field);
             }
         }
 

@@ -1,7 +1,5 @@
 package buttons;
 
-import java.awt.Color;
-
 import javax.swing.JSlider;
 
 import constants.ApplicationConstants;

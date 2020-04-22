@@ -6,11 +6,13 @@ import java.util.Optional;
 import java.util.PriorityQueue;
 
 public class Dijkstra extends Algorithm {
-    HashMap<Node, Integer> cost = new HashMap<>();
+    HashMap<Node, Integer> cost;
+    PriorityQueue<Node> openList;
 
-    public Dijkstra(Node startNode, Node goalNode, Collection<Node> borders) {
-        super(startNode, goalNode, borders);
+    public Dijkstra(Node startNode, Node goalNode, Collection<Node> borders, boolean diagonalPref) {
+        super(startNode, goalNode, borders, diagonalPref);
         openList = new PriorityQueue<Node>();
+        cost = new HashMap<Node, Integer>();
     }
 
     @Override
@@ -21,7 +23,7 @@ public class Dijkstra extends Algorithm {
 
             for (Node neighbor : getNeighbors(currentNode)) {
                 if (neighbor.getX() == goalNode.getX() && neighbor.getY() == goalNode.getY()) {
-                    getPathToGoal(neighbor);
+                    generatePathToGoal(neighbor);
                     isRunning = false;
                     return;
                 }
@@ -38,6 +40,21 @@ public class Dijkstra extends Algorithm {
         }
     }
 
+    @Override
+    public void addStartPoint(Node node) {
+        super.addStartPoint(node);
+        this.cost.clear();
+        this.openList.clear();
+        
+        this.cost.put(node, 0);
+        this.openList.add(node);
+    }
+
+    @Override
+    public Collection<Node> getOpenList() {
+        return this.openList;
+    }
+
     private boolean containsNode(Node neighbor) {
         return this.cost.keySet().stream()
                 .anyMatch(node -> node.getX() == neighbor.getX() && node.getY() == neighbor.getY());
@@ -50,12 +67,5 @@ public class Dijkstra extends Algorithm {
         if(!result.isPresent()) return Integer.MIN_VALUE;
         
         return this.cost.get(result.get());
-    }
-
-    @Override
-    public void addStartPoint(Node node) {
-        super.addStartPoint(node);
-        this.cost.clear();
-        this.cost.put(node, 0);
     }
 }

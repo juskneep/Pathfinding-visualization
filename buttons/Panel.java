@@ -14,19 +14,14 @@ public class Panel extends JPanel {
 
     public Panel(int positionX, int positionY) {
         super();
-        setBackgroundColor(color);
         setBounds(positionX, positionY, ApplicationConstants.panelWidth, ApplicationConstants.panelHeight);
+        setBackgroundColor(color);
         setFocusable(false);
     }
 
     public Panel(int positionX, int positionY, int panelWidth, int panelHeight) {
         this(positionX, positionY);
         setBounds(positionX, positionY, panelWidth, panelHeight);
-    }
-
-    public Panel(int positionX, int positionY, Color color) {
-        this(positionX, positionY);
-        setBackgroundColor(color);
     }
 
     public void setBackgroundColor(Color color) {

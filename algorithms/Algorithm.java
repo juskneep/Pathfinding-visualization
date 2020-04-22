@@ -7,33 +7,24 @@ import java.util.List;
 import frame.Frame;
 
 public abstract class Algorithm {
-	public Collection<Node> openList;
-	ArrayList<Node> borderCollection = new ArrayList<>();
-	public ArrayList<Node> pathToGoal = new ArrayList<>();
+	ArrayList<Node> borderCollection;
+	ArrayList<Node> pathToGoal;
 	boolean isRunning;
 	boolean diagonal;
-	public Node startNode;
-	public Node goalNode;
+	Node startNode;
+	Node goalNode;
 
 	public Algorithm() {
 		borderCollection = new ArrayList<>();
 		pathToGoal = new ArrayList<>();
 	}
 
-	public Algorithm(Node startNode) {
+	public Algorithm(Node startNode, Node goalNode, Collection<Node> borders, boolean diagonalPref) {
 		this();
 		this.startNode = startNode;
-	}
-
-	public Algorithm(Node startNode, Node goalNode) {
-		this(startNode);
 		this.goalNode = goalNode;
-	}
-
-	public Algorithm(Node startNode, Node goalNode, Collection<Node> borders) {
-		this(startNode);
-		this.goalNode = goalNode;
-		this.borderCollection.addAll(borders);
+		this.diagonal = diagonalPref;
+		this.borderCollection = new ArrayList<>(borders);
 	}
 
 
@@ -41,21 +32,25 @@ public abstract class Algorithm {
 		this.isRunning = true;
 	}
 
-	public void getPathToGoal(final Node node) {
+	protected void generatePathToGoal(Node node) {
 		Node currentNode = node;
 		while ((currentNode = currentNode.getParent()) != null)
 			pathToGoal.add(currentNode);
 	}
 
-	public boolean isStartCell(final int x, final int y) {
+	public Collection<Node> getPathToGoalCollection() {
+		return this.pathToGoal;
+	}
+
+	public boolean isStartCell(int x, int y) {
 		return startNode.getX() == x && startNode.getY() == y;
 	}
 
-	public boolean exist(final int rowIndex, final int colIndex) {
+	public boolean exist(int rowIndex, int colIndex) {
 		return rowIndex >= 0 && rowIndex < Frame.rowSize && colIndex >= 0 && colIndex < Frame.colSize;
 	}
 
-	public boolean isWall(final int rowIndex, final int colIndex) {
+	public boolean isWall(int rowIndex, int colIndex) {
 		return borderCollection.stream().anyMatch(node -> node.getX() == rowIndex && node.getY() == colIndex);
 	}
 
@@ -63,23 +58,23 @@ public abstract class Algorithm {
 		return borderCollection;
 	}
 
-	public void addBorder(final int xCoor, final int yCoor) {
-		borderCollection.add(new Node(xCoor, yCoor));
+	public void addBorder(Node node) {
+		borderCollection.add(node);
 	}
 
-	public void removeBorder(final int xCoor, final int yCoor) {
+	public void removeBorder(int xCoor, int yCoor) {
 		borderCollection.removeIf(node -> node.getX() == xCoor && node.getY() == yCoor);
 	}
 
-	public List<Node> getNeighbors(final Node node) {
-		final List<Node> neighborList = new ArrayList<Node>();
-		final int nodeRowIndex = node.getX();
-		final int nodeColumnIndex = node.getY();
+	public List<Node> getNeighbors(Node node) {
+		List<Node> neighborList = new ArrayList<Node>();
+		int nodeRowIndex = node.getX();
+		int nodeColumnIndex = node.getY();
 
-		final int topCellRow = nodeRowIndex - 1;
-		final int leftCellCol = nodeColumnIndex - 1;
-		final int rightCellCol = nodeColumnIndex + 1;
-		final int bottomCellRow = nodeRowIndex + 1;
+		int topCellRow = nodeRowIndex - 1;
+		int leftCellCol = nodeColumnIndex - 1;
+		int rightCellCol = nodeColumnIndex + 1;
+		int bottomCellRow = nodeRowIndex + 1;
 
 		for (int row = topCellRow; row <= bottomCellRow; row++)
 			for (int column = leftCellCol; column <= rightCellCol; column++)
@@ -99,25 +94,18 @@ public abstract class Algorithm {
 		return isRunning;
 	}
 
-	public void addToOpenList(final Node node) {
-		openList.add(node);
-	}
-
-	public void addStartPoint(final Node node) {
-		this.pathToGoal.clear();
-		this.openList.clear();
+	public void addStartPoint(Node node) {
 		this.startNode = node;
-		this.openList.add(node);
 	}
 
-	public void addEndPoint(final Node node) {
+	public void addEndPoint(Node node) {
 		this.goalNode = node;
 	}
-
-	abstract public void findPath();
 
 	public void changeDiagonalPref(boolean diagonal) {
 		this.diagonal = diagonal;
 	}
 
+	abstract public void findPath();
+	abstract public Collection<Node> getOpenList();
 }

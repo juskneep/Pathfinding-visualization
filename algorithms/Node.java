@@ -6,9 +6,7 @@ public class Node implements Comparable<Node> {
 	private Node parent;
 
 	public Node(int x, int y, Node parent) {
-		super();
-		this.x = x;
-		this.y = y;
+		this(x, y);
 		this.parent = parent;
 		setG();
 	}

@@ -12,22 +12,22 @@ import algorithms.BreadthFirstSearch;
 import algorithms.DepthFirstSearch;
 
 public class AlgorithmFactory {
-    public static Algorithm createAlgorithm(AlgorithmsEnum algorithmName, Node startNode, Node goalNode, Collection<Node> borders) {
+    public static Algorithm createAlgorithm(AlgorithmsEnum algorithmName, Node startNode, Node goalNode, boolean diagonalPref, Collection<Node> borders) {
         switch (algorithmName) {
             case AStar:
-                return new AStar(startNode, goalNode, borders);
+                return new AStar(startNode, goalNode, borders, diagonalPref);
             case Dijkstra:
-                return new Dijkstra(startNode, goalNode, borders);
+                return new Dijkstra(startNode, goalNode, borders, diagonalPref);
             case BreadthFirstSearch:
-                return new BreadthFirstSearch(startNode, goalNode, borders);
+                return new BreadthFirstSearch(startNode, goalNode, borders, diagonalPref);
             case DepthFirstSearch:
-                return new DepthFirstSearch(startNode, goalNode, borders);
+                return new DepthFirstSearch(startNode, goalNode, borders, diagonalPref);
             default:
                 return null;
         }
     }
 
-    public static Algorithm createAlgorithm(AlgorithmsEnum algorithmName, Node startNode, Node goalNode) {
-        return AlgorithmFactory.createAlgorithm(algorithmName, startNode, goalNode, new ArrayList<Node>());
+    public static Algorithm createAlgorithm(AlgorithmsEnum algorithmName, Node startNode, Node goalNode, boolean diagonalPref) {
+        return AlgorithmFactory.createAlgorithm(algorithmName, startNode, goalNode, diagonalPref, new ArrayList<Node>());
     }
 }

@@ -23,20 +23,20 @@ import frame.Frame;
 public class ControlHandlerService implements ActionListener, KeyListener, MouseInputListener {
 	Frame frame;
 	GUIFactory guiFactory;
-	public Algorithm algorithm;
+	Algorithm algorithm;
 	char currentKey = (char) 0;
 	AlgorithmsEnum selectedAlgorithm = AlgorithmsEnum.AStar;
 	Timer timer = new Timer(50, this);
 
-	public ControlHandlerService(Frame frame) throws IllegalArgumentException, IllegalAccessException {
+	public ControlHandlerService(Frame frame) {
 		this.frame = frame;
-		guiFactory = new GUIFactory(frame.window);
+		guiFactory = new GUIFactory(frame.getFrame());
 
 		frame.addMouseListener(this);
 		frame.addMouseMotionListener(this);
 		frame.addKeyListener(this);
 
-		algorithm = AlgorithmFactory.createAlgorithm(selectedAlgorithm, frame.startNode, frame.goalNode);
+		algorithm = AlgorithmFactory.createAlgorithm(selectedAlgorithm, frame.getFrameStartPoint(), frame.getFrameGoalPoint(), guiFactory.dialognals.isSelected());
 
 		controlHandler();
 		frame.repaint();
@@ -48,21 +48,15 @@ public class ControlHandlerService implements ActionListener, KeyListener, Mouse
 
 		if (SwingUtilities.isLeftMouseButton(e)) {
 			if (currentKey == 's') {
-				Node startNode = new Node(xPosition, yPosition);
-
-				algorithm.addStartPoint(startNode);
-
-				frame.setFrameStartPoint(startNode);
+				setStartPoint(new Node(xPosition, yPosition));
 			} else if (currentKey == 'e') {
-				Node goalNode = new Node(xPosition, yPosition);
-				algorithm.goalNode = goalNode;
-				frame.setFrameGoalPoint(goalNode);
+				setGoalPoint(new Node(xPosition, yPosition));
 			} else {
-				this.algorithm.addBorder(xPosition, yPosition);
+				addBorder(new Node(xPosition, yPosition));
 			}
 			frame.repaint();
 		} else if (SwingUtilities.isRightMouseButton(e)) {
-			this.algorithm.removeBorder(xPosition, yPosition);
+			removeBorder(xPosition, yPosition);
 			frame.repaint();
 		}
 	}
@@ -98,12 +92,9 @@ public class ControlHandlerService implements ActionListener, KeyListener, Mouse
 
 		guiFactory.clearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frame.setFrameStartPoint(null);
-				frame.setFrameGoalPoint(null);
-				algorithm = AlgorithmFactory.createAlgorithm(selectedAlgorithm, frame.startNode, frame.goalNode);
-				algorithm.changeDiagonalPref(guiFactory.dialognals.isSelected());
 				timer.stop();
-				frame.repaint();
+				algorithm = AlgorithmFactory.createAlgorithm(selectedAlgorithm, frame.getFrameStartPoint(), frame.getFrameGoalPoint(), guiFactory.dialognals.isSelected(), algorithm.getBorders());
+				frame.clearFrame();
 			}
 		});
 
@@ -111,17 +102,33 @@ public class ControlHandlerService implements ActionListener, KeyListener, Mouse
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				timer.stop();
-				AlgorithmsEnum algName = (AlgorithmsEnum) guiFactory.availableAlgorithms.getSelectedItem();
-				algorithm = AlgorithmFactory.createAlgorithm(algName, frame.startNode, frame.goalNode, algorithm.getBorders());
-				if(frame.startNode != null) algorithm.addStartPoint(frame.startNode);
-				algorithm.changeDiagonalPref(guiFactory.dialognals.isSelected());
-				selectedAlgorithm = algName;
+				selectedAlgorithm = (AlgorithmsEnum) guiFactory.availableAlgorithms.getSelectedItem();
+				algorithm = AlgorithmFactory.createAlgorithm(selectedAlgorithm, frame.getFrameStartPoint(), frame.getFrameGoalPoint(), guiFactory.dialognals.isSelected(), frame.getBorderCollection());
+
+				//If you have already set a start point
+				if(frame.getFrameStartPoint() != null) setStartPoint(frame.getFrameStartPoint());
 			}
 		});
 	}
 
-	@Override
-	public void keyTyped(KeyEvent e) {
+	private void setGoalPoint(Node goalNode) {
+		algorithm.addEndPoint(goalNode);
+		frame.setFrameGoalPoint(goalNode);
+	}
+
+	private void setStartPoint(Node startNode) {
+		algorithm.addStartPoint(startNode);
+		frame.setFrameStartPoint(startNode);
+	}
+
+	private void addBorder(Node node) {
+		frame.addBorder(node);
+		algorithm.addBorder(node);
+	}
+
+	private void removeBorder(int xPosition, int yPosition) {
+		frame.removeBorder(xPosition, yPosition);
+		algorithm.removeBorder(xPosition, yPosition);
 	}
 
 	@Override
@@ -140,25 +147,8 @@ public class ControlHandlerService implements ActionListener, KeyListener, Mouse
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void mouseEntered(MouseEvent e) {
 		this.handleMouseClick(e);
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -167,7 +157,9 @@ public class ControlHandlerService implements ActionListener, KeyListener, Mouse
 		try {
 			if (algorithm.isRunning()) {
 				this.algorithm.findPath();
-				frame.repaint();
+				this.frame.synchronizeOpenList(algorithm.getOpenList());
+			} else {
+				this.frame.synchronizePathToGoal(algorithm.getPathToGoalCollection());
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -180,9 +172,9 @@ public class ControlHandlerService implements ActionListener, KeyListener, Mouse
 
 	}
 
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+	@Override public void mouseMoved(MouseEvent e) {}
+	@Override public void mousePressed(MouseEvent e) {}
+	@Override public void mouseReleased(MouseEvent e) {}
+	@Override public void mouseExited(MouseEvent e) {}
+	@Override public void keyTyped(KeyEvent e) {}
 }

@@ -17,16 +17,16 @@ public class Button extends JButton implements MouseListener {
     Color hoverColor = Color.decode("#00aced");
 
     public Button(String title, int positionX, int positionY) {
-        super(title);
+        super();
         setBounds(positionX, positionY, ApplicationConstants.buttonWidth, ApplicationConstants.buttonHeight);
         setFocusable(false);
-        this.setFocusPainted(false);
-        this.setText(title.toUpperCase());
-        this.setBorder(null);
-        this.setForeground(textColor);
-        this.setBackground(backgroundColor);
-        this.setFont(defaultFont);
-        this.setOpaque(true);
+        setFocusPainted(false);
+        setText(title.toUpperCase());
+        setBorder(null);
+        setForeground(textColor);
+        setBackground(backgroundColor);
+        setFont(defaultFont);
+        setOpaque(true);
         addMouseListener(this);
     }
 

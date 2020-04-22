@@ -3,6 +3,8 @@ package frame;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,26 +18,30 @@ public class Frame extends JPanel {
 	public static final int colSize = 26;
 	public static int size = 25;
 
-	public JFrame window;
-
+	JFrame window;
 	ControlHandlerService controlHandlerService;
-	public Node startNode;
-	public Node goalNode;
+	Node startNode;
+	Node goalNode;
+	ArrayList<Node> borders, openList, pathToGoal;
 
-	public Frame() throws IllegalArgumentException, IllegalAccessException {
+	public Frame() {
 		setFocusable(true);
 		setLayout(null);
 
 		window = new JFrame();
 		window.setContentPane(this);
 		window.setTitle("Pathfinding Visualization");
-		window.getContentPane().setPreferredSize(new Dimension(1920, 1080));
+		this.setPreferredSize(new Dimension(1920, 1080));
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.pack();
 		window.setLocationRelativeTo(null);
 		window.setVisible(true);
 
-		controlHandlerService = new ControlHandlerService(this);
+		borders = new ArrayList<Node>();
+		openList = new ArrayList<Node>();
+		pathToGoal = new ArrayList<Node>();
+
+		new ControlHandlerService(this);
 	}
 
 	public void paintComponent(Graphics g) {
@@ -48,41 +54,63 @@ public class Frame extends JPanel {
 			}
 		}
 
-		// Skip the ingredients drawing if the algorithm is not initialized yet
-		if(controlHandlerService == null) return;
-
 		// Draws borders
 		g.setColor(new Color(128, 128, 128));
-		for (Node node : controlHandlerService.algorithm.getBorders()) {
+		for (Node node : borders) {
 			g.fillRect(node.getX() * size, node.getY() * size, size, size);
 		}
 
 		// Draws the start node
-		if (controlHandlerService.algorithm.startNode != null) {
+		if (startNode != null) {
 			g.setColor(new Color(0, 221, 0));
-			g.fillRect(controlHandlerService.algorithm.startNode.getX() * size, controlHandlerService.algorithm.startNode.getY() * size, size, size);
+			g.fillRect(startNode.getX() * size, startNode.getY() * size, size, size);
 		}
 
 		// Draws the goal node
-		if (controlHandlerService.algorithm.goalNode != null) {
+		if (goalNode != null) {
 			g.setColor(new Color(238, 68, 0));
-			g.fillRect(controlHandlerService.algorithm.goalNode.getX() * size, controlHandlerService.algorithm.goalNode.getY() * size, size, size);
+			g.fillRect(goalNode.getX() * size, goalNode.getY() * size, size, size);
 		}
 
 		g.setColor(new Color(175, 238, 238)); // Light blue
-		for (Node node : this.controlHandlerService.algorithm.openList) {
-			if (node.getX() == controlHandlerService.algorithm.startNode.getX() && node.getY() == controlHandlerService.algorithm.startNode.getY())
+		for (Node node : openList) {
+			if (isStartNode(node))
 				continue;
 
 			g.fillRect(node.getX() * size, node.getY() * size, size - 1, size - 1);
 		}
 
 		g.setColor(new Color(255, 254, 106)); // Light yellow
-		for (Node node : this.controlHandlerService.algorithm.pathToGoal) {
-			if (node.getX() == controlHandlerService.algorithm.startNode.getX() && node.getY() == controlHandlerService.algorithm.startNode.getY())
+		for (Node node : pathToGoal) {
+			if (isStartNode(node))
 				continue;
+
 			g.fillRect(node.getX() * size, node.getY() * size, size - 1, size - 1);
 		}
+	}
+
+	private boolean isStartNode(Node node) {
+		return startNode != null && node.getX() == startNode.getX() && node.getY() == startNode.getY();
+	}
+
+	public void addToOpenList(Node node) {
+		this.openList.add(node);		
+	}
+
+	public Collection<Node> getBorderCollection() {
+		return this.borders;
+	}
+
+	public void addBorder(Node node) {
+		this.borders.add(node);
+	}
+
+	public void removeBorder(int positionX, int positionY) {
+		this.borders.removeIf(node -> node.getX() == positionX && node.getY() == positionY);
+	}
+
+	public void setPathToGoal(Collection<Node> path) {
+		this.pathToGoal.addAll(path);
 	}
 
 	public void setFrameStartPoint(Node startNode) {
@@ -91,5 +119,36 @@ public class Frame extends JPanel {
 
 	public void setFrameGoalPoint(Node goalNode) {
 		this.goalNode = goalNode;
+	}
+
+	public Node getFrameStartPoint() {
+		return startNode;
+	}
+
+	public Node getFrameGoalPoint() {
+		return goalNode;
+	}
+
+	public JFrame getFrame() {
+		return window;
+	}
+
+	public void clearFrame() {
+		borders = new ArrayList<Node>();
+		openList = new ArrayList<Node>();
+		pathToGoal = new ArrayList<Node>();
+		setFrameGoalPoint(null);
+		setFrameStartPoint(null);
+		repaint();
+	}
+
+	public void synchronizeOpenList(Collection<Node> openList) {
+		this.openList = new ArrayList<>(openList);
+		repaint();
+	}
+
+	public void synchronizePathToGoal(Collection<Node> pathToGoal) {
+		this.pathToGoal = new ArrayList<>(pathToGoal);
+		repaint();
 	}
 }
