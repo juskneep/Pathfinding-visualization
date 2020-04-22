@@ -39,7 +39,8 @@ public class DepthFirstSearch extends Algorithm {
 
     @Override
     public void addStartPoint(Node node) {
-        this.startNode = node;
+        super.addStartPoint(node);
+        this.visitedNodes.clear();
         this.visitedNodes.add(node);
     }
 }

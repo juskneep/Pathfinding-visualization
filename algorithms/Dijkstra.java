@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.PriorityQueue;
-import javax.swing.JFrame;
 
 public class Dijkstra extends Algorithm {
     HashMap<Node, Integer> cost = new HashMap<>();
@@ -55,7 +54,8 @@ public class Dijkstra extends Algorithm {
 
     @Override
     public void addStartPoint(Node node) {
-        this.startNode = node;
+        super.addStartPoint(node);
+        this.cost.clear();
         this.cost.put(node, 0);
     }
 }

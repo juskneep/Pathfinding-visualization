@@ -107,6 +107,7 @@ public abstract class Algorithm {
 		this.pathToGoal.clear();
 		this.openList.clear();
 		this.startNode = node;
+		this.openList.add(node);
 	}
 
 	public void addEndPoint(final Node node) {
