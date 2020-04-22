@@ -10,6 +10,9 @@ public class ApplicationConstants {
     public static final int panelWidth = 350;
     public static final int panelHeight = 150;
 
+    public static final int algorithmPanelWidth = 300;
+    public static final int algorithmPanelHeight = 50;
+
     public static final int checkBoxWidth = 100;
     public static final int checkBoxHeight = 25;
 
@@ -20,7 +23,7 @@ public class ApplicationConstants {
     public static final int mainControlPaneY = 25;
 
     public static final int algorithmsPaneX = 950;
-    public static final int algorithmsPaneY = 525;
+    public static final int algorithmsPaneY = 575;
 
     //public static final int pathPaneX = 25;
     //public static final int pathPaneY = 525;
