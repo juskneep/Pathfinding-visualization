@@ -47,7 +47,7 @@ public abstract class Algorithm {
 	}
 
 	public boolean exist(final int rowIndex, final int colIndex) {
-		return rowIndex >= 0 && rowIndex <= Frame.rowSize && colIndex >= 0 && colIndex <= Frame.colSize;
+		return rowIndex >= 0 && rowIndex < Frame.rowSize && colIndex >= 0 && colIndex < Frame.colSize;
 	}
 
 	public boolean isWall(final int rowIndex, final int colIndex) {
