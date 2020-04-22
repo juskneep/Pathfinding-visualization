@@ -8,6 +8,8 @@ import constants.ApplicationConstants;
 import java.awt.Color;
 
 public class Panel extends JPanel {
+    private static final long serialVersionUID = -4084081114196804162L;
+    
     private Color color = new Color(0, 0, 0, 80);
 
     public Panel(int positionX, int positionY) {

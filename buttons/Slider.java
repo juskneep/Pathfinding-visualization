@@ -7,6 +7,7 @@ import javax.swing.JSlider;
 import constants.ApplicationConstants;
 
 public class Slider extends JSlider {
+    private static final long serialVersionUID = -6183948078031012348L;
 
     public Slider(int positionX, int positionY) {
         super();

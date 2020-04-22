@@ -10,6 +10,8 @@ import algorithms.Node;
 import services.ControlHandlerService;
 
 public class Frame extends JPanel {
+	private static final long serialVersionUID = 3952620062540448650L;
+
 	public static final int rowSize = 51;
 	public static final int colSize = 26;
 	public static int size = 25;

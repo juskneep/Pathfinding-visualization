@@ -9,6 +9,8 @@ import javax.swing.JButton;
 import constants.ApplicationConstants;
 
 public class Button extends JButton implements MouseListener {
+    private static final long serialVersionUID = 7264149987653918498L;
+    
     Font defaultFont = new Font("Gill Sans MT", Font.BOLD, 14);
     Color textColor = Color.decode("#ffffff");
     Color backgroundColor = Color.decode("#000000");
