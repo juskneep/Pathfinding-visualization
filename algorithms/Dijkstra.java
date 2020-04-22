@@ -18,7 +18,7 @@ public class Dijkstra extends Algorithm {
     @Override
     public void findPath() {
         if (!openList.isEmpty()) {
-            Node currentNode = ((PriorityQueue<Node>) openList).peek();
+            Node currentNode = openList.peek();
             openList.remove(currentNode);
 
             for (Node neighbor : getNeighbors(currentNode)) {

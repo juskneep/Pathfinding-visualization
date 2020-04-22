@@ -18,7 +18,7 @@ public class DepthFirstSearch extends Algorithm {
     @Override
     public void findPath() {
         if (!this.openList.isEmpty()) {
-            Node currentNode = ((Stack<Node>) openList).pop();
+            Node currentNode = openList.pop();
 
             for (Node neighbor : getNeighbors(currentNode)) {
                 if (neighbor.getX() == goalNode.getX() && neighbor.getY() == goalNode.getY()) {
