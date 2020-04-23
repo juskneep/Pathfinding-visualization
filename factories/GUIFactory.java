@@ -13,6 +13,7 @@ import constants.ApplicationConstants;
 
 public class GUIFactory {
 
+    //Do not initialize here pls :(
     Panel mainControlPane = new Panel(ApplicationConstants.mainControlPaneX, ApplicationConstants.mainControlPaneY);
     Panel algorithmsPane = new Panel(ApplicationConstants.algorithmsPaneX, ApplicationConstants.algorithmsPaneY,
             ApplicationConstants.algorithmPanelWidth, ApplicationConstants.algorithmPanelHeight);
