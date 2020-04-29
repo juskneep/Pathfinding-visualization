@@ -28,6 +28,10 @@ public class ApplicationConstants {
     public static final int algorithmsPaneX = 950;
     public static final int algorithmsPaneY = 575;
 
+    public static final int rowSize = 51;
+	public static final int colSize = 26;
+	public static int size = 25;
+
     public static final Font defaultTextFont = new Font("Gill Sans MT", Font.BOLD, 14);
     public static final Color defaultTextColor = Color.decode("#ffffff");
     public static final Color buttonBackgroundColor = Color.decode("#000000");

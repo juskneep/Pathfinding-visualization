@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import frame.Frame;
+import constants.ApplicationConstants;
 
 public abstract class Algorithm {
 	ArrayList<Node> borderCollection;
@@ -47,7 +47,7 @@ public abstract class Algorithm {
 	}
 
 	private boolean exist(int rowIndex, int colIndex) {
-		return rowIndex >= 0 && rowIndex < Frame.rowSize && colIndex >= 0 && colIndex < Frame.colSize;
+		return rowIndex >= 0 && rowIndex < ApplicationConstants.rowSize && colIndex >= 0 && colIndex < ApplicationConstants.colSize;
 	}
 
 	private boolean isWall(int rowIndex, int colIndex) {

@@ -79,7 +79,7 @@ public class GUIFactory {
         return clearButton;
     }
 
-    public Slider getSpeSlider() {
+    public Slider getSpeedSlider() {
         return speedSlider;
     }
 
