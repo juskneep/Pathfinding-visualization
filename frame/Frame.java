@@ -55,7 +55,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener, MouseI
 		if (algorithm == null)
 			return;
 		// Draws borders
-		g.setColor(new Color(128, 128, 128));
+		g.setColor(ApplicationConstants.borderColor); // Border gray color
 		for (Node node : algorithm.getBorders()) {
 			g.fillRect(node.getX() * ApplicationConstants.size, node.getY() * ApplicationConstants.size,
 					ApplicationConstants.size, ApplicationConstants.size);
@@ -63,19 +63,19 @@ public class Frame extends JPanel implements ActionListener, KeyListener, MouseI
 
 		// Draws the start node
 		if (startNode != null) {
-			g.setColor(new Color(0, 221, 0));
+			g.setColor(ApplicationConstants.startNodeColor); //Start node green color
 			g.fillRect(startNode.getX() * ApplicationConstants.size, startNode.getY() * ApplicationConstants.size,
 					ApplicationConstants.size, ApplicationConstants.size);
 		}
 
 		// Draws the goal node
 		if (goalNode != null) {
-			g.setColor(new Color(238, 68, 0));
+			g.setColor(ApplicationConstants.endNodeColor); // Goal node red color
 			g.fillRect(goalNode.getX() * ApplicationConstants.size, goalNode.getY() * ApplicationConstants.size,
 					ApplicationConstants.size, ApplicationConstants.size);
 		}
 
-		g.setColor(new Color(144, 238, 144)); // Light green
+		g.setColor(ApplicationConstants.closedListColor); // Light green
 		for (Node node : algorithm.getClosedList()) {
 			if (isStartNode(node))
 				continue;
@@ -85,7 +85,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener, MouseI
 		}
 
 		// Nodes so far
-		g.setColor(new Color(175, 238, 238)); // Light blue
+		g.setColor(ApplicationConstants.openListColor); // Light blue
 		for (Node node : algorithm.getOpenList()) {
 			if (isStartNode(node))
 				continue;
@@ -95,7 +95,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener, MouseI
 		}
 
 		// Path to goal
-		g.setColor(new Color(255, 254, 106)); // Light yellow
+		g.setColor(ApplicationConstants.pathToGoalColor); // Light yellow
 		for (Node node : algorithm.getPathToGoalCollection()) {
 			if (isStartNode(node))
 				continue;
