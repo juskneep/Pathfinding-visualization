@@ -6,7 +6,7 @@ import java.util.PriorityQueue;
 
 import exceptions.InvalidStartPointException;
 
-public class AStar extends Algorithm {
+public class AStar extends AlgorithmBase {
 	ArrayList<Node> closedList;
 	PriorityQueue<Node> openList;
 
@@ -68,5 +68,10 @@ public class AStar extends Algorithm {
 		if (deltaX > deltaY)
 			return 14 * deltaY + 10 * (deltaX - deltaY);
 		return 14 * deltaX + 10 * (deltaY - deltaX);
+	}
+
+	@Override
+	public Collection<Node> getClosedList() {
+		return this.closedList;
 	}
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 import exceptions.InvalidStartPointException;
 
-public class BreadthFirstSearch extends Algorithm {
+public class BreadthFirstSearch extends AlgorithmBase {
     List<Node> visitedNodes;
     ArrayList<Node> openList;
 
@@ -57,5 +57,10 @@ public class BreadthFirstSearch extends Algorithm {
     private boolean isVisited(Node node) {
         return visitedNodes.stream()
                 .anyMatch(currentNode -> currentNode.getX() == node.getX() && currentNode.getY() == node.getY());
+    }
+
+    @Override
+    public Collection<Node> getClosedList() {
+        return this.visitedNodes;
     }
 }

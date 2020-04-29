@@ -7,7 +7,7 @@ import java.util.Stack;
 
 import exceptions.InvalidStartPointException;
 
-public class DepthFirstSearch extends Algorithm {
+public class DepthFirstSearch extends AlgorithmBase {
     List<Node> visitedNodes;
     Stack<Node> openList;
 
@@ -57,5 +57,10 @@ public class DepthFirstSearch extends Algorithm {
     private boolean isVisited(Node node) {
         return visitedNodes.stream()
                 .anyMatch(currentNode -> currentNode.getX() == node.getX() && currentNode.getY() == node.getY());
+    }
+
+    @Override
+    public Collection<Node> getClosedList() {
+        return this.visitedNodes;
     }
 }

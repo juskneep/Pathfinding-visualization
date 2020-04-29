@@ -7,7 +7,7 @@ import algorithms.Dijkstra;
 import algorithms.AStar;
 import algorithms.Node;
 import constants.AlgorithmsEnum;
-import algorithms.Algorithm;
+import shared.Algorithm;
 import algorithms.BreadthFirstSearch;
 import algorithms.DepthFirstSearch;
 

@@ -7,7 +7,7 @@ import java.util.PriorityQueue;
 
 import exceptions.InvalidStartPointException;
 
-public class Dijkstra extends Algorithm {
+public class Dijkstra extends AlgorithmBase {
     HashMap<Node, Integer> cost;
     PriorityQueue<Node> openList;
 
@@ -71,5 +71,10 @@ public class Dijkstra extends Algorithm {
         if(!result.isPresent()) return Integer.MIN_VALUE;
         
         return this.cost.get(result.get());
+    }
+
+    @Override
+    public Collection<Node> getClosedList() {
+        return this.cost.keySet();
     }
 }

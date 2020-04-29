@@ -13,7 +13,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.event.MouseInputListener;
 
-import algorithms.Algorithm;
+import shared.Algorithm;
 import algorithms.Node;
 import constants.AlgorithmsEnum;
 import constants.ApplicationConstants;
@@ -73,6 +73,15 @@ public class Frame extends JPanel implements ActionListener, KeyListener, MouseI
 			g.setColor(new Color(238, 68, 0));
 			g.fillRect(goalNode.getX() * ApplicationConstants.size, goalNode.getY() * ApplicationConstants.size,
 					ApplicationConstants.size, ApplicationConstants.size);
+		}
+
+		g.setColor(new Color(144, 238, 144)); // Light green
+		for (Node node : algorithm.getClosedList()) {
+			if (isStartNode(node))
+				continue;
+
+			g.fillRect(node.getX() * ApplicationConstants.size, node.getY() * ApplicationConstants.size,
+					ApplicationConstants.size - 1, ApplicationConstants.size - 1);
 		}
 
 		// Nodes so far

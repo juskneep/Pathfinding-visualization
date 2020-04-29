@@ -6,8 +6,9 @@ import java.util.List;
 
 import constants.ApplicationConstants;
 import exceptions.InvalidStartPointException;
+import shared.Algorithm;
 
-public abstract class Algorithm {
+public abstract class AlgorithmBase implements Algorithm {
 	ArrayList<Node> borderCollection;
 	ArrayList<Node> pathToGoal;
 	boolean isRunning;
@@ -15,12 +16,12 @@ public abstract class Algorithm {
 	Node startNode;
 	Node goalNode;
 
-	private Algorithm() {
+	private AlgorithmBase() {
 		borderCollection = new ArrayList<>();
 		pathToGoal = new ArrayList<>();
 	}
 
-	protected Algorithm(Node startNode, Node goalNode, Collection<Node> borders, boolean diagonalPref) {
+	protected AlgorithmBase(Node startNode, Node goalNode, Collection<Node> borders, boolean diagonalPref) {
 		this();
 		this.startNode = startNode;
 		this.goalNode = goalNode;
