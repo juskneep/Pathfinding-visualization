@@ -17,6 +17,7 @@ import algorithms.Algorithm;
 import algorithms.Node;
 import constants.AlgorithmsEnum;
 import constants.ApplicationConstants;
+import exceptions.InvalidStartPointException;
 import factories.AlgorithmFactory;
 
 public class Frame extends JPanel implements ActionListener, KeyListener, MouseInputListener {
@@ -135,24 +136,30 @@ public class Frame extends JPanel implements ActionListener, KeyListener, MouseI
 		algorithm.removeBorder(xPosition, yPosition);
 	}
 
-
-	//Shared methods 
+	// Shared methods
 	public void start() {
 		if (algorithm.isRunning())
 			return;
 
-		algorithm.Run();
+		algorithm.run();
 		this.timer.start();
 		repaint();
 	}
 
 	public void stop() {
+		this.algorithm.stop();
 		this.timer.stop();
 		repaint();
 	}
 
 	public void setDelay(int delay) {
 		timer.setDelay(delay);
+	}
+
+	public void clearAlgorithm(AlgorithmsEnum selectedEnum, boolean diagonalPref) {
+		this.goalNode = null;
+		this.startNode = null;
+		this.createAlgorithm(selectedEnum, diagonalPref);
 	}
 
 	public void createAlgorithm(AlgorithmsEnum selectedEnum, boolean diagonalPref) {
@@ -171,8 +178,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener, MouseI
 		this.algorithm.changeDiagonalPref(pref);
 	}
 
-
-	//Event Listeners
+	// Event Listeners
 	@Override
 	public void keyPressed(KeyEvent e) {
 		currentKey = e.getKeyChar();
@@ -196,14 +202,19 @@ public class Frame extends JPanel implements ActionListener, KeyListener, MouseI
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		try {
-			if (algorithm.isRunning())
+		if (algorithm.isRunning()) {
+			try {
 				this.algorithm.findPath();
-
-			repaint();
-		} catch (Exception ex) {
-			ex.printStackTrace();
+			} catch (InvalidStartPointException ex) {
+				stop();
+				ex.printStackTrace();
+			} catch (Exception ex) {
+				stop();
+				ex.printStackTrace();
+			}
 		}
+
+		repaint();
 	}
 
 	@Override
@@ -213,13 +224,22 @@ public class Frame extends JPanel implements ActionListener, KeyListener, MouseI
 	}
 
 	@Override
-	public void mouseMoved(MouseEvent e) {}
+	public void mouseMoved(MouseEvent e) {
+	}
+
 	@Override
-	public void mousePressed(MouseEvent e) {}
+	public void mousePressed(MouseEvent e) {
+	}
+
 	@Override
-	public void mouseReleased(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {
+	}
+
 	@Override
-	public void mouseExited(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {
+	}
+
 	@Override
-	public void keyTyped(KeyEvent e) {}
+	public void keyTyped(KeyEvent e) {
+	}
 }

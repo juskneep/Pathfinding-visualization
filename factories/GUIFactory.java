@@ -23,7 +23,7 @@ public class GUIFactory {
     private Slider speedSlider;
     private ComboBox<AlgorithmsEnum> availableAlgorithms;
 
-    public GUIFactory(Frame rootPanel, String title) {
+    public GUIFactory(Frame rootPanel, String title) throws IllegalArgumentException, IllegalAccessException {
         this.frame = new JFrame();
 		this.frame.setContentPane(rootPanel);
         this.frame.setTitle(title);
@@ -56,18 +56,13 @@ public class GUIFactory {
         this.algorithmsPane.addComponents(this.availableAlgorithms);
     }
 
-    private void initializeControls() {
+    private void initializeControls() throws IllegalArgumentException, IllegalAccessException {
         for (Field component : this.getClass().getDeclaredFields()) {
             component.setAccessible(true);
 
             if (Panel.class.isAssignableFrom(component.getType())) {
                 Panel field = null;
-
-                try {
                     field = (Panel) component.get(this);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
                 if (field != null)
                     this.frame.add(field);

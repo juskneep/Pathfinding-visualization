@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.PriorityQueue;
 
+import exceptions.InvalidStartPointException;
+
 public class Dijkstra extends Algorithm {
     HashMap<Node, Integer> cost;
     PriorityQueue<Node> openList;
@@ -16,7 +18,9 @@ public class Dijkstra extends Algorithm {
     }
 
     @Override
-    public void findPath() {
+    public void findPath() throws InvalidStartPointException {
+        super.findPath();
+        
         if (!openList.isEmpty()) {
             Node currentNode = openList.peek();
             openList.remove(currentNode);

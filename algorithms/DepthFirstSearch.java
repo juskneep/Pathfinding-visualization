@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Stack;
 
+import exceptions.InvalidStartPointException;
+
 public class DepthFirstSearch extends Algorithm {
     List<Node> visitedNodes;
     Stack<Node> openList;
@@ -16,7 +18,9 @@ public class DepthFirstSearch extends Algorithm {
     }
 
     @Override
-    public void findPath() {
+    public void findPath() throws InvalidStartPointException {
+        super.findPath();
+        
         if (!this.openList.isEmpty()) {
             Node currentNode = openList.pop();
 

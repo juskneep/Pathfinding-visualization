@@ -4,8 +4,10 @@ public class Engine {
     public static void main(String[] args) {
         try {
             new App();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (IllegalArgumentException | IllegalAccessException e) {
+            e.printStackTrace();
+        } catch(Exception e) {
+            e.printStackTrace();
         }
     }
 }

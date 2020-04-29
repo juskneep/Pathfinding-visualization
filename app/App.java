@@ -17,7 +17,7 @@ public class App {
     private Frame frame;
     private GUIFactory guiFactory;
 
-    public App() {
+    public App() throws IllegalArgumentException, IllegalAccessException {
         this.frame = new Frame(defaultAlgorithm);
         this.guiFactory = new GUIFactory(this.frame, title);
 
@@ -25,22 +25,18 @@ public class App {
     }
 
     private void attachEventListeners() {
-		guiFactory.getStartButton().addActionListener(this.Run());
-		guiFactory.getSpeedSlider().addChangeListener(this.changeDelay());
-		guiFactory.getDiagonalBox().addActionListener(this.changeDiagonalPref());
-		guiFactory.getClearButton().addActionListener(this.clear());
-		guiFactory.getAlgorithmDropDown().addActionListener(this.switchAlgorithm());
-	}
+        guiFactory.getStartButton().addActionListener(this.Run());
+        guiFactory.getSpeedSlider().addChangeListener(this.changeDelay());
+        guiFactory.getDiagonalBox().addActionListener(this.changeDiagonalPref());
+        guiFactory.getClearButton().addActionListener(this.clear());
+        guiFactory.getAlgorithmDropDown().addActionListener(this.switchAlgorithm());
+    }
 
     private ActionListener Run() {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    frame.start();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+                frame.start();
             }
         };
     }
@@ -65,20 +61,20 @@ public class App {
 
     private ActionListener clear() {
         return new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-                frame.createAlgorithm(guiFactory.getSelectedAlgorithm(), guiFactory.getDiagonalPref());
-				frame.stop();
+            public void actionPerformed(ActionEvent e) {
+                frame.clearAlgorithm(guiFactory.getSelectedAlgorithm(), guiFactory.getDiagonalPref());
+                frame.stop();
             }
         };
     }
 
     private ActionListener switchAlgorithm() {
         return new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 frame.stop();
                 frame.changeAlgorithm(guiFactory.getSelectedAlgorithm(), guiFactory.getDiagonalPref());
-			}
-		};
+            }
+        };
     }
 }

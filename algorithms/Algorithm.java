@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import constants.ApplicationConstants;
+import exceptions.InvalidStartPointException;
 
 public abstract class Algorithm {
 	ArrayList<Node> borderCollection;
@@ -28,8 +29,12 @@ public abstract class Algorithm {
 	}
 
 
-	public void Run() {
+	public void run() {
 		this.isRunning = true;
+	}
+
+	public void stop() {
+		this.isRunning = false;
 	}
 
 	protected void generatePathToGoal(Node node) {
@@ -106,6 +111,8 @@ public abstract class Algorithm {
 		this.diagonal = diagonal;
 	}
 
-	abstract public void findPath();
+	public void findPath() throws InvalidStartPointException {
+		if(this.startNode == null || this.goalNode == null) throw new InvalidStartPointException(startNode, goalNode);
+	};
 	abstract public Collection<Node> getOpenList();
 }

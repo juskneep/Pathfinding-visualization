@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import exceptions.InvalidStartPointException;
+
 public class BreadthFirstSearch extends Algorithm {
     List<Node> visitedNodes;
     ArrayList<Node> openList;
@@ -15,7 +17,9 @@ public class BreadthFirstSearch extends Algorithm {
     }
 
     @Override
-    public void findPath() {
+    public void findPath() throws InvalidStartPointException {
+        super.findPath();
+        
         if (!this.openList.isEmpty()) {
             Node currentNode = openList.get(0);
             openList.remove(currentNode);

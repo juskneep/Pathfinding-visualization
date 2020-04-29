@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.PriorityQueue;
 
+import exceptions.InvalidStartPointException;
+
 public class AStar extends Algorithm {
 	ArrayList<Node> closedList;
 	PriorityQueue<Node> openList;
@@ -15,7 +17,9 @@ public class AStar extends Algorithm {
 	}
 
 	@Override
-	public void findPath() {
+	public void findPath() throws InvalidStartPointException {
+		super.findPath();
+
 		if (!this.openList.isEmpty()) {
 			Node currentNode = openList.peek();
 			openList.remove(currentNode);
