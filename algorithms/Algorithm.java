@@ -51,19 +51,19 @@ public abstract class Algorithm {
 	}
 
 	private boolean isWall(int rowIndex, int colIndex) {
-		return borderCollection.stream().anyMatch(node -> node.getX() == rowIndex && node.getY() == colIndex);
+		return this.borderCollection.stream().anyMatch(node -> node.getX() == rowIndex && node.getY() == colIndex);
 	}
 
 	public ArrayList<Node> getBorders() {
-		return borderCollection;
+		return this.borderCollection;
 	}
 
 	public void addBorder(Node node) {
-		borderCollection.add(node);
+		this.borderCollection.add(node);
 	}
 
 	public void removeBorder(int xCoor, int yCoor) {
-		borderCollection.removeIf(node -> node.getX() == xCoor && node.getY() == yCoor);
+		this.borderCollection.removeIf(node -> node.getX() == xCoor && node.getY() == yCoor);
 	}
 
 	protected List<Node> getNeighbors(Node node) {
@@ -85,13 +85,13 @@ public abstract class Algorithm {
 	}
 
 	private boolean checkDiagonal(int row, int column, int nodeRowIndex, int nodeColumnIndex) {
-		if(diagonal) return true;
+		if(this.diagonal) return true;
 
 		return row == nodeRowIndex || nodeColumnIndex == column;
 	}
 
 	public boolean isRunning() {
-		return isRunning;
+		return this.isRunning;
 	}
 
 	public void addStartPoint(Node node) {

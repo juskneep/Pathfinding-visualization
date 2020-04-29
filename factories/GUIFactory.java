@@ -10,31 +10,53 @@ import buttons.Panel;
 import buttons.Slider;
 import constants.AlgorithmsEnum;
 import constants.ApplicationConstants;
+import frame.Frame;
 
 public class GUIFactory {
 
-    //Do not initialize here pls :(
-    Panel mainControlPane = new Panel(ApplicationConstants.mainControlPaneX, ApplicationConstants.mainControlPaneY);
-    Panel algorithmsPane = new Panel(ApplicationConstants.algorithmsPaneX, ApplicationConstants.algorithmsPaneY,
-            ApplicationConstants.algorithmPanelWidth, ApplicationConstants.algorithmPanelHeight);
+    private JFrame frame;
 
-    Button startButton = new Button("Start", 200, 100);
-    Button clearButton = new Button("Clear", 25, 100);
-    CheckBox dialognals = new CheckBox("Diagonals", 25, 70);
-    Slider speedSlider = new Slider(50, 10);
-    ComboBox<AlgorithmsEnum> availableAlgorithms = new ComboBox<AlgorithmsEnum>(AlgorithmsEnum.values(), 25, 10);
+    private Panel mainControlPane, algorithmsPane;
 
-    public GUIFactory(JFrame frame) {
+    private Button startButton, clearButton;
+    private CheckBox dialognals;
+    private Slider speedSlider;
+    private ComboBox<AlgorithmsEnum> availableAlgorithms;
+
+    public GUIFactory(Frame rootPanel, String title) {
+        this.frame = new JFrame();
+		this.frame.setContentPane(rootPanel);
+        this.frame.setTitle(title);
+
+        showFrame();
         initializeButtons();
-        initializeControls(frame);
+        initializeControls();
+    }
+
+    private void showFrame() {
+		this.frame.setPreferredSize(ApplicationConstants.dimension);
+		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.frame.pack();
+		this.frame.setLocationRelativeTo(null);
+        this.frame.setVisible(true);
     }
 
     private void initializeButtons() {
-        mainControlPane.addComponents(startButton, clearButton, dialognals, speedSlider);
-        algorithmsPane.addComponents(availableAlgorithms);
+        this.mainControlPane = new Panel(ApplicationConstants.mainControlPaneX, ApplicationConstants.mainControlPaneY);
+        this.algorithmsPane = new Panel(ApplicationConstants.algorithmsPaneX, ApplicationConstants.algorithmsPaneY,
+                ApplicationConstants.algorithmPanelWidth, ApplicationConstants.algorithmPanelHeight);
+    
+        this.startButton = new Button("Start", 200, 100);
+        this.clearButton = new Button("Clear", 25, 100);
+        this.dialognals = new CheckBox("Diagonals", 25, 70);
+        this.speedSlider = new Slider(50, 10);
+        this.availableAlgorithms = new ComboBox<AlgorithmsEnum>(AlgorithmsEnum.values(), 25, 10);
+        
+        this.mainControlPane.addComponents(this.startButton, this.clearButton, this.dialognals, this.speedSlider);
+        this.algorithmsPane.addComponents(this.availableAlgorithms);
     }
 
-    private void initializeControls(JFrame frame) {
+    private void initializeControls() {
         for (Field component : this.getClass().getDeclaredFields()) {
             component.setAccessible(true);
 
@@ -48,11 +70,11 @@ public class GUIFactory {
                 }
 
                 if (field != null)
-                    frame.add(field);
+                    this.frame.add(field);
             }
         }
 
-        frame.repaint();
+        this.frame.repaint();
     }
 
     public boolean getDiagonalPref() {
@@ -64,26 +86,26 @@ public class GUIFactory {
     }
 
     public int getSpeedValue() {
-        return 100 - speedSlider.getValue();
+        return 100 - this.speedSlider.getValue();
     }
 
     public ComboBox<AlgorithmsEnum> getAlgorithmDropDown() {
-        return availableAlgorithms;
+        return this.availableAlgorithms;
     }
 
     public Button getStartButton() {
-        return startButton;
+        return this.startButton;
     }
     
     public Button getClearButton() {
-        return clearButton;
+        return this.clearButton;
     }
 
     public Slider getSpeedSlider() {
-        return speedSlider;
+        return this.speedSlider;
     }
 
     public CheckBox getDiagonalBox() {
-        return dialognals;
+        return this.dialognals;
     }
 }

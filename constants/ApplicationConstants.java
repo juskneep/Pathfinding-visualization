@@ -3,6 +3,9 @@ package constants;
 import java.awt.Color;
 import java.awt.Font;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 public class ApplicationConstants {
     public static final int sliderWidth = 250;
     public static final int sliderHeight = 50;
@@ -36,4 +39,6 @@ public class ApplicationConstants {
     public static final Color defaultTextColor = Color.decode("#ffffff");
     public static final Color buttonBackgroundColor = Color.decode("#000000");
     public static final Color buttonHoverColor = Color.decode("#00aced");
+
+    public static final Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 }
